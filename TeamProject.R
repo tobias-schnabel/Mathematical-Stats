@@ -39,3 +39,5 @@ subsample_1 <- subset(annualData, Year >= 1907 & Year < 1958)
 #overlapping samples
 zoo::rollapply(annualData$Eelde, 10, mean)
 zoo::rollmean(annualData$'De Bilt', 10)
+
+#hgjhvh
