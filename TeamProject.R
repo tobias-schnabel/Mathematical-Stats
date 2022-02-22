@@ -12,22 +12,29 @@ colnames(annualData) <- c("Year", "Eelde", "De Bilt", "Maastricht")
 monthlyData <- read.csv("~/R projects/Mathematical_Stats/Data/MonthlyTemp.csv", 
                         header = TRUE, sep = ";", quote = "\"'", dec = ",", 
                         fill = TRUE, comment.char="")
+#label
 colnames(monthlyData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
 #daily
-dailyData <- read.csv("~/R projects/Mathematical_Stats/Data/DailyTemp.csv", 
+dailyData <- read.csv("/Users/ts/R projects/Mathematical_Stats/Data/DailyTemp.csv", 
                         header = TRUE, sep = ";", quote = "\"'", dec = ",", 
                         fill = TRUE, comment.char="")
+#label
 colnames(dailyData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
 
 #smoothed
-#monthlySmoothedData <- read.csv("~/R projects/Mathematical_Stats/Data/SMTemp.csv")
+monthlySmoothedData <- read.csv("/Users/ts/R projects/Mathematical_Stats/Data/SmoothedMonthlyTemp.csv", 
+                                header = TRUE, sep = ";", quote = "\"'", dec = ",", 
+                                fill = TRUE, comment.char="")
+#label
+colnames(dailyData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
 
 #save
 save.image("ProjectData.RData")
 
 #Split the sample in a number of subsamples, and 
 #compare average temperatures across the subsamples.
-#subsample_1 <- subset(annualData, Year >= 1907 & Year < 1958)
+#non-overlapping subsamples
+subsample_1 <- subset(annualData, Year >= 1907 & Year < 1958)
 
 #overlapping samples
 zoo::rollapply(annualData$Eelde, 10, mean)
