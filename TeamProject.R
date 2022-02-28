@@ -1,5 +1,9 @@
 #load packages
+<<<<<<< HEAD
 library("zoo", "ggplot2", "tidyverse", "data.table")
+=======
+library("zoo", "ggplot2", "tidy", "data.table")
+>>>>>>> 251937e0300c450e36643c7ddf0b973b865d1ab6
 
 ##import data
 #########
