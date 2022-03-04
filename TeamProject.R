@@ -1,5 +1,5 @@
 # Package names
-packages <- c("dplyr", "zoo", "tidyr", "ggplot2", "tidyverse")
+packages <- c("dplyr", "zoo", "tidyr", "ggplot2", "tidyverse", "xtable", "knitr")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
