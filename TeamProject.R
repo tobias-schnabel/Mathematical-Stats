@@ -1,6 +1,6 @@
-#############################################################
 #########################HOUSEKEEPING########################
-#############################################################
+
+rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
 packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "tidyverse", "xtable", "knitr")
 
@@ -19,54 +19,33 @@ Paths = c("/Users/ts/Git/Mathematical_Stats", "Users/chumasharajapakshe/Document
 names(Paths) = c("ts", "chumasharajapakshe")
 setwd(Paths[Sys.info()[7]])
 
-#############################################################
 #########################DATA IMPORT#########################
-#############################################################
 
 #annual
-annualData <- read.csv("./Data/AnnualTemp.csv", 
-                 header = TRUE, sep = ";", quote = "\"'", dec = ",", 
-                 fill = TRUE, comment.char="")
-colnames(annualData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
+da <- fread('./Data/AnnualTemp.csv')
+#colnames(da) <- c("Year", "Eelde", "De.Bilt", "Maastricht") 
+
+invisible(da[, .(Year = Date, De.Bilt = 'De Bilt')])
 #monthly
-monthlyData <- read.csv("./Data/MonthlyTemp.csv", 
-                        header = TRUE, sep = ";", quote = "\"'", dec = ",", 
-                        fill = TRUE, comment.char="")
-#label
-colnames(monthlyData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
-#daily
-dailyData <- read.csv("./Data/DailyTemp.csv", 
-                        header = TRUE, sep = ";", quote = "\"'", dec = ",", 
-                        fill = TRUE, comment.char="")
-#label
-colnames(dailyData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
+dm <- fread('./Data/MonthlyTemp.csv')
+invisible(dm[, .(Month = Date, De.Bilt = 'De Bilt')])
 
 #smoothed
-monthlySmoothedData <- read.csv("./Data/SMTemp.csv", 
-                                header = TRUE, sep = ";", quote = "\"'", dec = ",", 
-                                fill = TRUE, comment.char="")
-#label
-colnames(dailyData) <- c("Year", "Eelde", "De Bilt", "Maastricht") 
+dms <- fread('./Data/SMTemp.csv')
+invisible(da[, .(Month = Date, De.Bilt = 'De Bilt')])
 
-#set df as data tables
-setDT(annualData)
-setDT(monthlyData)
-setDT(monthlySmoothedData)
-setDT(dailyData)
+#daily
+dd <- fread('./Data/DailyTemp.csv')
+invisible(da[, .(De.Bilt = 'De Bilt')])
 
-#save: save.image("ProjectData.RData")
-
-#############################################################
 ########################DATA ANALYSIS########################
-#############################################################
 
 #Split the sample in a number of subsamples, and 
 #compare average temperatures across the subsamples.
 #non-overlapping subsamples
-subsample_1 <- subset(annualData, Year >= 1907 & Year < 1958)
 
-#overlapping samples
-#zoo::rollapply(annualData$Eelde, 10, mean)
+
+
 
 
 
