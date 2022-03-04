@@ -1,5 +1,15 @@
+# Package names
+packages <- c("dplyr", "zoo", "tidyr", "ggplot2", "tidyverse")
+
+# Install packages not yet installed
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
 #load packages
-library("zoo", "ggplot2", "tidyverse", "data.table")
+invisible(lapply(packages, library, character.only = TRUE))
+
 
 
 ##import data
