@@ -44,7 +44,7 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
 # rollmeans[, ID := .I ] #data starts in 1907 (first year from which onwards we can computer a decade, ID starts at 1)
 # meantable <- rollmeans[ID %%10 == 0 , .(Year = ID + 1897, Eelde = V1, 'De Bilt' = V2, Maastricht = V3)]
 
-xYearAvg <- function(x){
+xYearMean <- function(x){
   #generate data.table with rolling means, window=x
   xYrm <- as.data.table(frollmean(da[, .(de_bilt, eelde, maastricht)], x))[, ID := .I ]
   keepYearsX <- seq(from = 1, to = 120, by = x) #used to drop all other rows
@@ -54,8 +54,20 @@ xYearAvg <- function(x){
   return(xYmt)
 }
 
-meanTable10 <- xYearAvg(10)
-view(meanTable10)
-meanTable5 <- xYearAvg(5)
-view(meanTable5)
+xYearMean <- function(x, FNAME){
+  #generate data.table with rolling means, window=x
+  frollapply(da[, .(de_bilt, eelde, maastricht)], 20, FUN = FNAME)
+  xYrm <- as.data.table(frollmean(da[, .(de_bilt, eelde, maastricht)], x))[, ID := .I ]
+  keepYearsX <- seq(from = 1, to = 120, by = x) #used to drop all other rows
+  
+  #data starts in 1907, first 10 years of rollmean are NA, years in this table indicate start of window
+  xYmt <- xYrm[ID %%x == 0 , .(Year = ID + 1897, Eelde = V1, 'De Bilt' = V2, Maastricht = V3)]
+  return(xYmt)
+}
 
+meanTable10 <- xYearMean(10, mean)
+meanTable5 <- xYearMean(5, mean)
+meanTable20 <- xYearMean(20, mean)
+meanTable50 <- xYearMean(50, mean)
+
+medianTable5 <- xYearMean(5, median)
