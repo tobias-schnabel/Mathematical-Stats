@@ -2,7 +2,7 @@
 #########################HOUSEKEEPING########################
 #############################################################
 # Package names
-packages <- c("dplyr", "zoo", "tidyr", "ggplot2", "tidyverse", "xtable", "knitr")
+packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "tidyverse", "xtable", "knitr")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
@@ -54,8 +54,7 @@ setDT(monthlyData)
 setDT(monthlySmoothedData)
 setDT(dailyData)
 
-#save
-save.image("ProjectData.RData")
+#save: save.image("ProjectData.RData")
 
 #############################################################
 ########################DATA ANALYSIS########################
