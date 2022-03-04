@@ -23,28 +23,25 @@ setwd(Paths[Sys.info()[7]])
 
 #annual
 da <- fread('./Data/AnnualTemp.csv')
-#colnames(da) <- c("Year", "Eelde", "De.Bilt", "Maastricht") 
-
-invisible(da[, .(Year = Date, De.Bilt = 'De Bilt')])
+colnames(da) <- c('year', 'de_bilt', 'eelde', 'maastricht')
 #monthly
 dm <- fread('./Data/MonthlyTemp.csv')
-invisible(dm[, .(Month = Date, De.Bilt = 'De Bilt')])
+colnames(dm) <- c('month', 'de_bilt', 'eelde', 'maastricht')
 
 #smoothed
 dms <- fread('./Data/SMTemp.csv')
-invisible(da[, .(Month = Date, De.Bilt = 'De Bilt')])
+colnames(dms) <- c('month', 'de_bilt', 'eelde', 'maastricht')
 
 #daily
 dd <- fread('./Data/DailyTemp.csv')
-invisible(da[, .(De.Bilt = 'De Bilt')])
-
+colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
 ########################DATA ANALYSIS########################
 
 #Split the sample in a number of subsamples, and 
 #compare average temperatures across the subsamples.
 #non-overlapping subsamples
 
-
+#tenyearmeans <- da[, .(meanMST = mean(maastricht) )]
 
 
 
