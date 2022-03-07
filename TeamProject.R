@@ -79,14 +79,27 @@ xDayStat <- function(x, STATNAME){
   return(xMosSStat)
 }
 
-xDateComparisonSet <- function(monthAndDate){
-  inputdate <- as.Date(as.character(monthAndDate), format("%m%d"))
-  compSet <- dd[, daterows := as.Date(as.character(date), format = "%Y%m%d")][daterows == inputdate]
-
+subsetMonth <- function(mm){
+  mm <- str_pad(as.character(mm), 2, side = "left", pad = '0')
+  
+  subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
+              ][, month := format(as.Date(DateCol), "%m")]
+  compSet <- subset[month == mm, .(DateCol, eelde, de_bilt, maastricht)]
 return(compSet)
 }
-mar15 <- xDateComparisonSet(0315)
 
+subsetDate <- function(mmdd){
+  mmdd <- str_pad(as.character(mmdd), 4, side = "left", pad = '0')
+  
+  subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
+  ][, md := format(as.Date(DateCol), "%m%d")]
+  
+  compSet <- subset[mmdd == md, .(DateCol, eelde, de_bilt, maastricht)]
+  return(compSet)
+}
+
+march15 <- subsetDate(315)
+february <- subsetMonth(2)
 
 meanTable10y <- xYearStat(10, mean)
 meanTable5y <- xYearStat(5, mean)
