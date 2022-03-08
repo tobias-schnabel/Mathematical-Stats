@@ -113,3 +113,24 @@ medianTable5mo <- xMonthStat(5, median)
 meanTable20d <- xDayStat(20, mean)
 
 
+########################Plots########################
+colors <- c("maastricht" = "blue", "eelde" = "red", "de_bilt" = "orange")
+
+#tidy
+#da %>% pivot_longer()
+
+#histograms
+
+colors <- c("maastricht" = "Blue", "eelde" = "Red", "de_bilt" = "Orange")
+dplot <-  ggplot(data = da, aes(maastricht)) +
+ geom_density(aes(x = maastricht, color = "maastricht"), linetype = "longdash")+ 
+  geom_density(aes(x = eelde, color = "eelde"), linetype = "longdash") +
+  geom_density(aes(x=de_bilt, color = 'de_bilt'), linetype = "longdash") + 
+  theme_minimal() + labs(x = "Temperature",
+                         y = "Density",
+                         color = "Legend") +
+  scale_color_manual(values = colors) +
+  theme( panel.grid.minor = element_blank())
+#panel.grid.major = element_blank(), 
+dplot
+                    
