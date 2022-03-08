@@ -2,7 +2,7 @@
 
 rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
-packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "tidyverse", "xtable", "knitr", "stargazer")
+packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "tidyverse", "xtable", "knitr", "stargazer")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
@@ -141,7 +141,7 @@ meanTable20d <- xDayStat(20, mean)
 
 if (Sys.info()[7] == "ts") {
   #credit OSS authors
-  knitr::write_bib(c(.packages(), "natbib", width = 60),
+  knitr::write_bib(c(.packages()),
  "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/packages.bib")
 
 
