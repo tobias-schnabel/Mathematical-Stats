@@ -13,6 +13,7 @@ if (any(installed_packages == FALSE)) {
 #load packages
 invisible(lapply(packages, library, character.only = TRUE))
 
+
 #/Users/chumasharajapakshe/Documents/GitHub/Mathematical_Stats/Data/AnnualTemp.csv
 #/Users/ts/Git/Mathematical_Stats
 Paths = c("/Users/ts/Git/Mathematical_Stats", "Users/chumasharajapakshe/Documents/GitHub/Mathematical_Stats")
@@ -88,18 +89,44 @@ subsetMonth <- function(mm){
 return(compSet)
 }
 
+subsetMonthLong <- function(mm){
+  mm <- str_pad(as.character(mm), 2, side = "left", pad = '0')
+  
+  subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
+  ][, month := format(as.Date(DateCol), "%m")]
+  compSet <- subset[month == mm, .(Month = month, Eelde = eelde, De.Bilt = de_bilt, Maastricht = maastricht)]
+  ret <- melt(compSet, id.vars = "Month", measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
+              variable.factor = T, variable.name = "City", value.name = "Temperature")[, Citymean := mean(Temperature), by = City]
+  return(ret)
+}
+
 subsetDate <- function(mmdd){
   mmdd <- str_pad(as.character(mmdd), 4, side = "left", pad = '0')
   
   subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
   ][, md := format(as.Date(DateCol), "%m%d")]
   
-  compSet <- subset[mmdd == md, .(DateCol, eelde, de_bilt, maastricht)]
+  compSet <- subset[mmdd == md, .(Date = md, eelde, de_bilt, maastricht)]
   return(compSet)
 }
 
+subsetDateLong <- function(mmdd){
+  mmdd <- str_pad(as.character(mmdd), 4, side = "left", pad = '0')
+  
+  subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
+  ][, md := format(as.Date(DateCol), "%m%d")]
+  
+  compSet <- subset[mmdd == md, .(Date = md, Eelde = eelde, De.Bilt = de_bilt, Maastricht = maastricht)]
+  ret <- melt(compSet, id.vars = "Date", measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
+              variable.factor = T, variable.name = "City", value.name = "Temperature")[, Citymean := mean(Temperature)]
+  return(ret)
+}
+
 march15 <- subsetDate(315)
+april <- subsetMonthLong(4)
+september <- subsetMonthLong(9)
 february <- subsetMonth(2)
+
 
 meanTable10y <- xYearStat(10, mean)
 meanTable5y <- xYearStat(5, mean)
@@ -113,29 +140,33 @@ medianTable5mo <- xMonthStat(5, median)
 meanTable20d <- xDayStat(20, mean)
 
 if (Sys.info()[7] == "ts") {
+  #credit OSS authors
+  knitr::write_bib(c(.packages(), "natbib", width = 60),
+ "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/packages.bib")
+
 
 ###############################################################
 ##############################tidy#############################
 daC <- da[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Year = year)]
 daLong <- melt(daC, id.vars = c("Year"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                variable.factor = T, variable.name = "City", value.name = "Temperature")
-citymean <- daLong[, Citymean := mean(Temperature), by = City]
+citymeanA <- daLong[, Citymean := mean(Temperature), by = City]
 
 dmsC <- dms[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Month = month )]
 dmsLong <- melt(dmsC, id.vars = c("Month"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                variable.factor = T, variable.name = "City", value.name = "Temperature")
-citymean <- daLong[, Citymean := mean(Temperature), by = City]
+citymeanMS <- daLong[, Citymean := mean(Temperature), by = City]
 
 ddC <- dd[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Date = date )]
 ddLong <- melt(ddC, id.vars = c("Date"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                 variable.factor = T, variable.name = "City", value.name = "Temperature")
-citymean <- daLong[, Citymean := mean(Temperature), by = City]
+citymeanD <- daLong[, Citymean := mean(Temperature), by = City]
 
 ########################Plots########################
 #histograms
 
 densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_density() +
-  geom_vline(data=citymean, aes(xintercept = Citymean, color = City), linetype = "dashed") +
+  geom_vline(data=citymeanA, aes(xintercept = Citymean, color = City), linetype = "dashed") +
             theme_minimal() + ylab("Density") + ggtitle("Annual Mean Temperatures") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
@@ -143,10 +174,18 @@ densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_densi
   ggsave("AM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
   path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
+aprilPlot <- ggplot(april, aes(x = Temperature, color = City)) + geom_density() +
+  geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
+  theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in April") +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
-    
+septemberplot <- ggplot(september, aes(x = Temperature, color = City)) + geom_density() +
+  geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
+  theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in September") +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))
+
 densplotmonthsS <- ggplot(dmsLong, aes(x = Temperature, color = City)) + geom_density() +
-  geom_vline(data=citymean, aes(xintercept = Citymean, color = City), linetype = "dashed") +
+  geom_vline(data=citymeanMS, aes(xintercept = Citymean, color = City), linetype = "dashed") +
   theme_minimal() + ylab("Density")+ ggtitle("Monthly Mean Temperatures") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
@@ -154,7 +193,7 @@ densplotmonthsS <- ggplot(dmsLong, aes(x = Temperature, color = City)) + geom_de
    path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 densplotDays <- ggplot(ddLong, aes(x = Temperature, color = City)) + geom_density() +
-    geom_vline(data=citymean, aes(xintercept = Citymean, color = City), linetype = "dashed") +
+    geom_vline(data=citymeanD, aes(xintercept = Citymean, color = City), linetype = "dashed") +
     theme_minimal() + ylab("Density")+ ggtitle("Daily Mean Temperatures") +
     theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
   
