@@ -113,10 +113,9 @@ medianTable5mo <- xMonthStat(5, median)
 meanTable20d <- xDayStat(20, mean)
 
 if (Sys.info()[7] == "ts") {
-########################Plots########################
-colors <- c("maastricht" = "blue", "eelde" = "red", "de_bilt" = "orange")
 
-#tidy
+###############################################################
+##############################tidy#############################
 daC <- da[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Year = year)]
 daLong <- melt(daC, id.vars = c("Year"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                variable.factor = T, variable.name = "City", value.name = "Temperature")
@@ -127,7 +126,12 @@ dmsLong <- melt(dmsC, id.vars = c("Month"), measure.vars = c("Maastricht", "Eeld
                variable.factor = T, variable.name = "City", value.name = "Temperature")
 citymean <- daLong[, Citymean := mean(Temperature), by = City]
 
+ddC <- dd[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Date = date )]
+ddLong <- melt(ddC, id.vars = c("Date"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
+                variable.factor = T, variable.name = "City", value.name = "Temperature")
+citymean <- daLong[, Citymean := mean(Temperature), by = City]
 
+########################Plots########################
 #histograms
 
 densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_density() +
@@ -136,7 +140,7 @@ densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_densi
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
 
-  ggsave("annualmean", device = "png", bg = "white",
+  ggsave("AM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
   path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 
@@ -146,21 +150,32 @@ densplotmonthsS <- ggplot(dmsLong, aes(x = Temperature, color = City)) + geom_de
   theme_minimal() + ylab("Density")+ ggtitle("Monthly Mean Temperatures") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
-  ggsave("monthlymean", device = "png", bg = "white",
+  ggsave("MM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
    path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
-
+densplotDays <- ggplot(ddLong, aes(x = Temperature, color = City)) + geom_density() +
+    geom_vline(data=citymean, aes(xintercept = Citymean, color = City), linetype = "dashed") +
+    theme_minimal() + ylab("Density")+ ggtitle("Daily Mean Temperatures") +
+    theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
+  
+  ggsave("DM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+         path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+  
 
 
 ########################Tables########################
 daSS <- daC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
-invisible(stargazer(daSS, out.header = F, title = "Annual Data",
-                    out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/AnnualSummary" ))
+stargazer(daSS, out.header = F, title = "Annual Data",
+                    out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/AS" )
+
 
 dmsSS <- dmsC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
 stargazer(dmsSS, out.header = F, title = "Smoothed Monthly Data",
-          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/MonthlySummary" )
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/MS" )
 
+ddSS <- ddC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
+stargazer(ddSS, out.header = F, title = "Daily Data",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/DS" )
 
 }
                     
