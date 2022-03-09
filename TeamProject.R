@@ -2,7 +2,8 @@
 
 rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
-packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "tidyverse", "xtable", "knitr", "stargazer")
+packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", 
+              "tidyverse", "xtable", "knitr", "stargazer", "grateful", "remotes")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
@@ -144,6 +145,9 @@ if (Sys.info()[7] == "ts") {
   knitr::write_bib(c(.packages()),
  "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/packages.bib")
 
+  grateful::cite_packages(output = "paragraph", dependencies = F, include.RStudio = T, 
+                out.dir = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/",
+                bib.file = "grateful.bib")
 
 ###############################################################
 ##############################tidy#############################
