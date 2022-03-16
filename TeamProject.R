@@ -3,8 +3,9 @@
 rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
 packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", 
-              "tidyverse", "xtable", "knitr", "stargazer", "grateful", "remotes")
-
+              "tidyverse", "xtable", "knitr", "stargazer", "remotes")
+# package grateful must be installed by hand# install.packages("remotes")
+remotes::install_github("Pakillo/grateful")
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
 if (any(installed_packages == FALSE)) {
@@ -54,6 +55,16 @@ xYearStat <- function(x, STATNAME){
   dateSet <- da[, ID := .I][, .(year, ID)]
   xYrStatInclYr <- cbind(xYrS, dateSet)
   xYST <- xYrStatInclYr[ID %% x == 0 , .(Year = year, Eelde = V1, 'De Bilt' = V2, Maastricht = V3)]
+  return(xYST)
+}
+
+xYearYoverlapStat <- function(x, y, STATNAME){
+  #generate data.table with rolling means, window=x
+  xYrS <- as.data.table(frollapply(da[, .(de_bilt, eelde, maastricht)], x, FUN = STATNAME))[, ID := .I ]
+  dateSet <- da[, ID := .I][, .(year, ID)]
+  xYrStatInclYr <- cbind(xYrS, dateSet)
+  z = x - y
+  xYST <- xYrStatInclYr[ID %% z == 0 , .(Year = year, Eelde = V1, 'De.Bilt' = V2, Maastricht = V3)]
   return(xYST)
 }
 
@@ -128,6 +139,7 @@ april <- subsetMonthLong(4)
 september <- subsetMonthLong(9)
 february <- subsetMonth(2)
 
+rollingMean10_5 <- xYearYoverlapStat(10, 5, mean)
 
 meanTable10y <- xYearStat(10, mean)
 meanTable5y <- xYearStat(5, mean)
@@ -159,15 +171,20 @@ citymeanA <- daLong[, Citymean := mean(Temperature), by = City]
 dmsC <- dms[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Month = month )]
 dmsLong <- melt(dmsC, id.vars = c("Month"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                variable.factor = T, variable.name = "City", value.name = "Temperature")
-citymeanMS <- daLong[, Citymean := mean(Temperature), by = City]
+citymeanMS <- dmsLong[, Citymean := mean(Temperature), by = City]
 
 ddC <- dd[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Date = date )]
 ddLong <- melt(ddC, id.vars = c("Date"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                 variable.factor = T, variable.name = "City", value.name = "Temperature")
-citymeanD <- daLong[, Citymean := mean(Temperature), by = City]
+citymeanD <- ddLong[, Citymean := mean(Temperature), by = City]
+
+rollC <- rollingMean10_5
+rollingL <- melt(rollC, id.vars = c("Year"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
+                 variable.factor = T, variable.name = "City", value.name = "Temperature")
+
 
 ########################Plots########################
-#histograms
+#densities
 
 densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_density() +
   geom_vline(data=citymeanA, aes(xintercept = Citymean, color = City), linetype = "dashed") +
@@ -175,7 +192,7 @@ densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_densi
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
 
-  ggsave("AM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+  ggsave("AD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
   path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 aprilPlot <- ggplot(april, aes(x = Temperature, color = City)) + geom_density() +
@@ -183,17 +200,24 @@ aprilPlot <- ggplot(april, aes(x = Temperature, color = City)) + geom_density() 
   theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in April") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
+ggsave("aprilD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
+
 septemberplot <- ggplot(september, aes(x = Temperature, color = City)) + geom_density() +
   geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
   theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in September") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))
+
+ggsave("septemberD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 densplotmonthsS <- ggplot(dmsLong, aes(x = Temperature, color = City)) + geom_density() +
   geom_vline(data=citymeanMS, aes(xintercept = Citymean, color = City), linetype = "dashed") +
   theme_minimal() + ylab("Density")+ ggtitle("Monthly Mean Temperatures") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
 
-  ggsave("MM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+  ggsave("MD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
    path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 densplotDays <- ggplot(ddLong, aes(x = Temperature, color = City)) + geom_density() +
@@ -201,9 +225,15 @@ densplotDays <- ggplot(ddLong, aes(x = Temperature, color = City)) + geom_densit
     theme_minimal() + ylab("Density")+ ggtitle("Daily Mean Temperatures") +
     theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) 
   
-  ggsave("DM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+  ggsave("DD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
          path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
   
+densplotRoll <- ggplot(rollingL, aes(x = Temperature, color = City))+ geom_density() +
+  theme_minimal() + ylab("Density")+ ggtitle("Rolling 5 Year Window 10 Year Mean Temperatures") +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))
+
+ggsave("10_5D.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 
 ########################Tables########################
