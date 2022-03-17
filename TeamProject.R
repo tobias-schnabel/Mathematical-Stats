@@ -312,4 +312,21 @@ stargazer(ddSS, out.header = F, title = "Daily Data",
           out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/DS" )
 
 }
+
+#simple OLS
+OLS <- function(x,y){
+  beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))
+  alpha <- mean(y) - beta * mean(x)
+  return(c(alpha, beta))
+}
+
+OLS(Maastricht, DeBilt)
+
+#confidence interval 95%
+CI <- function(n, x, m, sd){
+  upperbound <- (qnorm(0.975)*sd)/sqrt(n)+x
+  lowerbound <- -(qnorm(0.975)*sd)/sqrt(n)+x
+  return(c(lowerbound, upperbound))
+}
+
                     
