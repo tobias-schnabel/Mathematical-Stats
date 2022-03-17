@@ -16,8 +16,6 @@ if (any(installed_packages == FALSE)) {
 invisible(lapply(packages, library, character.only = TRUE))
 
 
-#/Users/chumasharajapakshe/Documents/GitHub/Mathematical_Stats/Data/AnnualTemp.csv
-#/Users/ts/Git/Mathematical_Stats
 Paths = c("/Users/ts/Git/Mathematical_Stats", "Users/chumasharajapakshe/Documents/GitHub/Mathematical_Stats")
 names(Paths) = c("ts", "chumasharajapakshe")
 setwd(Paths[Sys.info()[7]])
@@ -156,6 +154,22 @@ meanTable10mo <- xMonthStat(10, mean)
 medianTable5mo <- xMonthStat(5, median)
 
 meanTable20d <- xDayStat(20, mean)
+
+#simple OLS
+OLS <- function(x,y){
+  beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))
+  alpha <- mean(y) - beta * mean(x)
+  return(c(alpha, beta))
+}
+
+OLS(da$Maastricht, da$DeBilt)
+
+#confidence interval 95%
+CI <- function(n, x, m, sd){
+  upperbound <- (qnorm(0.975)*sd)/sqrt(n)+x
+  lowerbound <- -(qnorm(0.975)*sd)/sqrt(n)+x
+  return(c(lowerbound, upperbound))
+}
 
 if (Sys.info()[7] == "ts") {
   #credit OSS authors
@@ -297,6 +311,7 @@ fourwayplot <-  fourwayplot +  plot_annotation(title = 'Mean Temperatures in Dif
 ggsave("4wayD.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
+
 ########################Tables########################
 daSS <- daC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
 stargazer(daSS, out.header = F, title = "Annual Data",
@@ -311,22 +326,14 @@ ddSS <- ddC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
 stargazer(ddSS, out.header = F, title = "Daily Data",
           out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/DS" )
 
+
+
+########################R File########################
+# knitr::stitch('TeamProject.R')
+# file.copy('TeamProject.tex', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/', overwrite = T)
+file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/', overwrite = T)
 }
 
-#simple OLS
-OLS <- function(x,y){
-  beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))
-  alpha <- mean(y) - beta * mean(x)
-  return(c(alpha, beta))
-}
 
-OLS(Maastricht, DeBilt)
-
-#confidence interval 95%
-CI <- function(n, x, m, sd){
-  upperbound <- (qnorm(0.975)*sd)/sqrt(n)+x
-  lowerbound <- -(qnorm(0.975)*sd)/sqrt(n)+x
-  return(c(lowerbound, upperbound))
-}
 
                     
