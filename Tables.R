@@ -17,3 +17,10 @@ stargazer(ddSS, out.header = F, title = "Daily Data",
           out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/DS" )
 
 
+#time series break tests
+stargazer(structtabY, out.header = F, summary = F,  title = "Structural Break in Yearly Data",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBY")
+
+stargazer(structtabM, out.header = F, summary = F,  title = "Structural Break in Yearly Data",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBM")
+

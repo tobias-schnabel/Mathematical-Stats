@@ -2,7 +2,7 @@
 
 rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
-packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "scales",
+packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "scales", "strucchange",
               "tidyverse", "xtable", "knitr", "stargazer", "patchwork", "remotes", "broom", "purrr")
 # package grateful must be installed by hand# install.packages("remotes")
 remotes::install_github("Pakillo/grateful")
@@ -162,7 +162,47 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
    meanTable20d <- xDayStat(20, mean)
 }
 
-
+#test for structural change
+{
+  structmat1 <- matrix(nrow = 3, ncol=2)
+  rownames(structmat1) <- c('De Bilt', 'Eelde', 'Maastricht')
+  colnames(structmat1) <- c('F-Statistic', 'p-value')
+  
+  scyM <- sctest(da$year ~ da$maastricht, type = "Chow")
+  scyE <- sctest(da$year ~ da$eelde, type = "Chow")
+  scyD <- sctest(da$year ~ da$de_bilt, type = "Chow")
+  
+  structmat1[3,1] <- scyM$statistic
+  structmat1[3,2] <- scyM$p.value
+  structmat1[2,1] <- scyE$statistic
+  structmat1[2,2] <- scyE$p.value
+  structmat1[1,1] <- scyD$statistic
+  structmat1[1,2] <- scyD$p.value
+  
+  structtabY <- as.data.table(structmat1, keep.rownames = T)
+  setnames(structtabY, "rn", "City")
+  rm('scyM','scyE', 'scyD', 'structmat1')
+  
+  structmat2 <- matrix(nrow = 3, ncol=2)
+  rownames(structmat2) <- c('De Bilt', 'Eelde', 'Maastricht')
+  colnames(structmat2) <- c('F-Statistic', 'p-value')
+  
+  scmM <- sctest(dm$month ~ dm$maastricht, type = "Chow")
+  scmE <- sctest(dm$month ~ dm$eelde, type = "Chow")
+  scmD <- sctest(dm$month ~ dm$de_bilt, type = "Chow")
+  
+  structmat2[3,1] <- scmM$statistic
+  structmat2[3,2] <- scmM$p.value
+  structmat2[2,1] <- scmE$statistic
+  structmat2[2,2] <- scmE$p.value
+  structmat2[1,1] <- scmD$statistic
+  structmat2[1,2] <- scmD$p.value
+  
+  structtabM <- as.data.table(structmat2, keep.rownames = T)
+  setnames(structtabM, "rn", "City")
+  
+  rm('scmM','scmE', 'scmD', 'structmat2')
+}
 #simple OLS
 OLS <- function(x,y){
   beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))
