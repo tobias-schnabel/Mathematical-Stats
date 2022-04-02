@@ -24,3 +24,6 @@ stargazer(structtabY, out.header = F, summary = F,  title = "Structural Break in
 stargazer(structtabM, out.header = F, summary = F,  title = "Structural Break in Yearly Data",
           out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBM")
 
+stargazer(structtabBP, out.header = F, summary = F, digit.separate = 0 ,
+          title = "Structural Break Breakpoints",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBBP")

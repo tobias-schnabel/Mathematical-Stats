@@ -1,4 +1,24 @@
 ########################Plots########################
+#raw data
+TSA <- ggplot(daLong[, Year := format(Year, format = "%Y")], aes(x = Year, y = Temperature)) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  scale_x_date(date_breaks = "5 Year")
+
+# dat <- dmLong[, yrmon := as.yearmon(Month)]
+TSM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(190501, 202501)
+
+TSMS <- ggplot(dmsLong, aes(x = Month, y = Temperature)) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(190501, 202501)
+
 #normality
 qqY <-  ggplot(daLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
@@ -12,7 +32,7 @@ ggsave("qqY.png",  bg = "white", dpi = "retina", width = 20, height = 10, units 
 
 qqM <-  ggplot(dmLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
-  labs(y = "Weight", x = "Theoretical") +theme_minimal() + ggtitle("Annual Data Q-Q Plot") +
+  labs(y = "Weight", x = "Theoretical") +theme_minimal() + ggtitle("Monthly Data Q-Q Plot") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
   scale_color_tableau()
 
@@ -22,7 +42,7 @@ ggsave("qqM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units 
 
 qqMs <-  ggplot(dmsLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
-  labs(y = "Weight", x = "Theoretical") +theme_minimal() + ggtitle("Annual Data Q-Q Plot") +
+  labs(y = "Weight", x = "Theoretical") +theme_minimal() + ggtitle("Smoothed Monthly Data Q-Q Plot") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
   scale_color_tableau()
 
@@ -32,7 +52,7 @@ ggsave("qqMs.png",  bg = "white", dpi = "retina", width = 20, height = 10, units
 
 qqD <-  ggplot(ddLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
-  labs(y = "Weight", x = "Theoretical") +theme_minimal() + ggtitle("Annual Data Q-Q Plot") +
+  labs(y = "Weight", x = "Theoretical") +theme_minimal() + ggtitle("Daily Data Q-Q Plot") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
   scale_color_tableau()
 
@@ -42,11 +62,26 @@ ggsave("qqD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units 
 
 #histograms
 histY <- ggplot(daLong, aes(x = Temperature, color = City)) + 
-  geom_histogram(fill="white", alpha=0.5, position="identity", bins=60) +
+  geom_histogram(fill="white", alpha=0.5, position="dodge", bins=45) +
   geom_vline(data=citymeanA, aes(xintercept = Citymean, color = City), linetype = "dashed") +
   theme_minimal() + ylab("Density") + ggtitle("Annual Mean Temperatures") +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
   scale_color_tableau()
+
+ggsave("Ahist.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
+
+histM <- ggplot(dmLong, aes(x = Temperature, color = City)) + 
+  geom_histogram(fill="white", alpha=0.5, position="dodge", bins=45) +
+  geom_vline(data=citymeanM, aes(xintercept = Citymean, color = City), linetype = "dashed") +
+  theme_minimal() + ylab("Density") + ggtitle("Monthly Mean Temperatures") +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  scale_color_tableau()
+
+ggsave("Mhist.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
 
 #densities
 

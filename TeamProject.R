@@ -202,7 +202,32 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
   setnames(structtabM, "rn", "City")
   
   rm('scmM','scmE', 'scmD', 'structmat2')
+  
+  #find breakpoints
+  structmat3 <- matrix(nrow = 3, ncol=2)
+  rownames(structmat3) <- c('De Bilt', 'Eelde', 'Maastricht')
+  colnames(structmat3) <- c('Yearly Data Breakpoint', 'Monthly Data Breakpoint')
+  
+  ybpm <-  breakpoints(da$year ~ da$maastricht, h = 0.35, breaks = 1)
+  structmat3[3,1] <- da[ID == ybpm$breakpoints, year]
+  ybpe <- breakpoints(da$year ~ da$eelde, h = 0.35, breaks = 1)
+  structmat3[2,1] <- da[ID == ybpe$breakpoints, year]
+  ybpd <- breakpoints(da$year ~ da$de_bilt, h = 0.35, breaks = 1)
+  structmat3[1,1] <- da[ID == ybpd$breakpoints, year]
+  
+  mbpm <-  breakpoints(dm$month ~ dm$maastricht, h = 0.35, breaks = 1)
+  structmat3[3,2] <- dm[ID == mbpm$breakpoints, month]
+  mbpe <- breakpoints(dm$month ~ dm$eelde, h = 0.35, breaks = 1)
+  structmat3[2,2] <- dm[ID == mbpe$breakpoints, month]
+  mbpd <- breakpoints(dm$month ~ dm$de_bilt, h = 0.35, breaks = 1)
+  structmat3[1,2] <- dm[ID == mbpd$breakpoints, month]
+  
+  structtabBP <- as.data.table(structmat3, keep.rownames = T)
+  setnames(structtabBP, "rn", "City")
+  rm('ybpm','ybpe', 'ybbd', 'mbpd', 'mbpe', 'mbpd', 'structmat3')
 }
+
+
 #simple OLS
 OLS <- function(x,y){
   beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))
