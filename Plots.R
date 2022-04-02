@@ -1,23 +1,34 @@
 ########################Plots########################
 #raw data
-TSA <- ggplot(daLong[, Year := format(Year, format = "%Y")], aes(x = Year, y = Temperature)) +
+TSA <- ggplot(daLong, aes(x = Year, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
   theme_minimal() + scale_color_tableau() + 
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  scale_x_date(date_breaks = "5 Year")
+  xlim(1905, 2025) + ggtitle("Annual Data")
 
-# dat <- dmLong[, yrmon := as.yearmon(Month)]
+ggsave("TSA.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
+
+# dat <- dmLong[, Month := yearmon(Month)]
 TSM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
   theme_minimal() + scale_color_tableau() + 
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  xlim(190501, 202501)
+  xlim(190501, 202501) + ggtitle("Monthly Data")
+
+ggsave("TSM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 TSMS <- ggplot(dmsLong, aes(x = Month, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
   theme_minimal() + scale_color_tableau() + 
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  xlim(190501, 202501)
+  xlim(190501, 202501) + ggtitle("Smoothed Monthly Data")
+
+ggsave("TSMS.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
 
 #normality
 qqY <-  ggplot(daLong, aes(sample = Temperature)) +

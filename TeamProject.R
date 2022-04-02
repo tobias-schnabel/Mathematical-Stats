@@ -224,7 +224,7 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
   
   structtabBP <- as.data.table(structmat3, keep.rownames = T)
   setnames(structtabBP, "rn", "City")
-  rm('ybpm','ybpe', 'ybbd', 'mbpd', 'mbpe', 'mbpd', 'structmat3')
+  rm('ybpm','ybpe', 'ybpd', 'mbpd', 'mbpe', 'structmat3')
 }
 
 
