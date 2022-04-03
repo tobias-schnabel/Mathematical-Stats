@@ -28,11 +28,17 @@ print(xtable(structtabBP, align = "llcc", caption = "Structural Break Breakpoint
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBBP")
 
 #paired t tests
-print(xtable(testmat1, align = "lcccc", caption = "Paired t-tests, Yearly Data", digits = c(5,3,7,4,4)), caption.placement = 'top',
+print(xtable(testmat1, align = "lcccc", caption = "Paired t-tests, Yearly Data, 1961 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Paired-t-Y")
 
-print(xtable(testmat2, align = "lcccc", caption = "Paired t-tests, Monthly Data", digits = c(5,3,7,4,4)), caption.placement = 'top',
+print(xtable(testmat2, align = "lcccc", caption = "Paired t-tests, Monthly Data, 1961 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Paired-t-M")
+
+print(xtable(testmat21, align = "lcccc", caption = "Paired t-tests, Yearly Data, 1975 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Paired-t-CBY")
+
+print(xtable(testmat23, align = "lcccc", caption = "Paired t-tests, Monthly Data, 1975 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Paired-t-CBM")
 
 #t test loops
 print(xtable(testmat3, align = "lccc|c|c|c", caption = "t-tests, 10-Year Means", digits = c(1,0,0,4,5,4,4)), caption.placement = 'top',
@@ -44,3 +50,15 @@ print(xtable(testmat4, align = "lccc|c|c|c", caption = "t-tests, 5-Year Means", 
 print(xtable(testmat5, align = "lccc|c|c|c", caption = "t-tests, 10-Year Medians", digits = c(1,0,0,4,5,4,4)), caption.placement = 'top',
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/tT10Ymedian")
 
+#F-tests
+print(xtable(testmat6, align = "lcccc", caption = "F-tests, Yearly Data, 1961 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-Y")
+
+print(xtable(testmat7, align = "lcccc", caption = "F-tests, Monthly Data, 1961 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-M")
+
+print(xtable(testmat22, align = "lcccc", caption = "F-tests, Yearly Data, 1975 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-CBY")
+
+print(xtable(testmat24, align = "lcccc", caption = "F-tests, Monthly Data, 1975 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-CBM")
