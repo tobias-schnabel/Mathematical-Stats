@@ -276,6 +276,56 @@ testmat2[1,4] <- ttmAD$conf.int[2:2]
 testmat2[2,4] <- ttmAE$conf.int[2:2]
 testmat2[3,4] <- ttmAM$conf.int[2:2]
 
+#use subsamples set earlier
+#meanTable10y
+testmat3 <- matrix(nrow = 10, ncol=6)
+rownames(testmat3) <- 1:11
+colnames(testmat3) <- c('Base Year', 'Comparison Year', 't-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
+
+j = 1
+for (i in 2:11) {
+  testmat3[j,1] <- meanTable10y[1,Year]
+  testmat3[j,2] <- meanTable10y[i,Year]
+  testmat3[j,3] <- t.test(meanTable10y[1,2:4], meanTable10y[i,2:4])$statistic
+  testmat3[j,4] <- t.test(meanTable10y[1,2:4], meanTable10y[i,2:4])$p.value
+  testmat3[j,5] <- t.test(meanTable10y[1,2:4], meanTable10y[i,2:4])$conf.int[1:1]
+  testmat3[j,6] <- t.test(meanTable10y[1,2:4], meanTable10y[i,2:4])$conf.int[2:2]
+  j <- j + 1
+}
+
+#meanTable5y
+testmat4 <- matrix(nrow = 21, ncol=6)
+rownames(testmat4) <- 1:21
+colnames(testmat4) <- c('Base Year', 'Comparison Year', 't-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
+
+j = 1
+for (i in 2:22) {
+  testmat4[j,1] <- meanTable5y[1,Year]
+  testmat4[j,2] <- meanTable5y[i,Year]
+  testmat4[j,3] <- t.test(meanTable5y[1,2:4], meanTable5y[i,2:4])$statistic
+  testmat4[j,4] <- t.test(meanTable5y[1,2:4], meanTable5y[i,2:4])$p.value
+  testmat4[j,5] <- t.test(meanTable5y[1,2:4], meanTable5y[i,2:4])$conf.int[1:1]
+  testmat4[j,6] <- t.test(meanTable5y[1,2:4], meanTable5y[i,2:4])$conf.int[2:2]
+  j <- j + 1
+}
+
+
+#medianTable10y
+testmat5 <- matrix(nrow = 10, ncol=6)
+rownames(testmat5) <- 1:11
+colnames(testmat5) <- c('Base Year', 'Comparison Year', 't-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
+
+j = 1
+for (i in 2:11) {
+  testmat5[j,1] <- medianTable10y[1,Year]
+  testmat5[j,2] <- medianTable10y[i,Year]
+  testmat5[j,3] <- t.test(medianTable10y[1,2:4], medianTable10y[i,2:4])$statistic
+  testmat5[j,4] <- t.test(medianTable10y[1,2:4], medianTable10y[i,2:4])$p.value
+  testmat5[j,5] <- t.test(medianTable10y[1,2:4], medianTable10y[i,2:4])$conf.int[1:1]
+  testmat5[j,6] <- t.test(medianTable10y[1,2:4], medianTable10y[i,2:4])$conf.int[2:2]
+  j <- j + 1
+}
+
 #simple OLS
 OLS <- function(x,y){
   beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))

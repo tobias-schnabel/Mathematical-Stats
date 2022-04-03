@@ -34,4 +34,13 @@ print(xtable(testmat1, align = "lcccc", caption = "Paired t-tests, Yearly Data",
 print(xtable(testmat2, align = "lcccc", caption = "Paired t-tests, Monthly Data", digits = c(5,3,7,4,4)), caption.placement = 'top',
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Paired-t-M")
 
+#t test loops
+print(xtable(testmat3, align = "lccc|c|c|c", caption = "t-tests, 10-Year Means", digits = c(1,0,0,4,5,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/tT10Ymean")
+
+print(xtable(testmat4, align = "lccc|c|c|c", caption = "t-tests, 5-Year Means", digits = c(1,0,0,4,5,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/tT5Ymean")
+
+print(xtable(testmat5, align = "lccc|c|c|c", caption = "t-tests, 10-Year Medians", digits = c(1,0,0,4,5,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/tT10Ymedian")
 

@@ -254,4 +254,32 @@ fourwayplot <-  fourwayplot +  plot_annotation(title = 'Mean Temperatures in Dif
 ggsave("4wayD.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
+
+
+#test stats for 5y mean tables
+#graph building blocks
+
+hyptestdatw <- as.data.table(cbind(seq(from=1916, to=2016, by = 5), testmat4[,4])) 
+colnames(hyptestdatw) <- c("Year", "p-values")
+
+hyptestdat <- melt(hyptestdatw, id.vars = c("Year"), measure.vars = "p-values", variable.factor = F)
+
+hyptestplot <- ggplot(hyptestdat, aes(x= hyptestdat$Year, y= hyptestdat$value)) + 
+  geom_line(colour = '#E15759') +
+  geom_hline(yintercept = 0.05, colour = '#4E79A7') + 
+  geom_text(aes(2000, 0.05, label = 0.05, vjust = -0.5, colour = '#4E79A7')) +
+  geom_hline(yintercept = 0.1, colour = '#F28E2B') + 
+  geom_text(aes(2000, 0.1, label = 0.1, vjust = -0.5, colour = '#F28E2B')) +
+  labs(y = 'p-values', x = 'Year') +
+  theme_minimal() + scale_color_tableau() +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "none") +
+  ggtitle("t-test Significance Levels, t-tests on 5-year Means, Base Year 1911")
+
+ggsave("hyptestlevels",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
+
+
+
+
 rm('march', 'june', 'september', 'december', 'rollingMean10_5', 'rollingMean20_10', 'marchD2', 'juneD2', 'septemberD2', 'decemberD2')
