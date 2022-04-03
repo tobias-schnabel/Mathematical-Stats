@@ -1,3 +1,16 @@
+##gert required subsets
+#4-way plot subsets
+march <- subsetMonthLong(3)
+june <- subsetMonthLong(6)
+september <- subsetMonthLong(9)
+december <- subsetMonthLong(12)
+
+#rolling window plots
+rollingMean10_5 <- xYearYoverlapStat(10, 5, mean)
+rollingMean20_10 <- xYearYoverlapStat(20, 10, mean)
+
+#date plot
+april6 <- subsetDateLong(406)
 ########################Plots########################
 #raw data
 TSA <- ggplot(daLong, aes(x = Year, y = Temperature)) +
@@ -7,6 +20,24 @@ TSA <- ggplot(daLong, aes(x = Year, y = Temperature)) +
   xlim(1905, 2025) + ggtitle("Annual Data")
 
 ggsave("TSA.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
+TSABP <- ggplot(daLong, aes(x = Year, y = Temperature)) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + geom_vline(xintercept = 1961, linetype = 'dashed', colour = '#76B7B2') +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(1945, 1975) + ggtitle("Annual Data: Breakpoint")
+
+ggsave("TSA_BP.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+
+TS4_16 <- ggplot(april6, aes(x = Date, y = Temperature)) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Date') +
+  theme_minimal() + scale_color_tableau() +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  ggtitle("Temperatures on April 6")
+
+ggsave("TS4_16.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 
@@ -223,3 +254,4 @@ fourwayplot <-  fourwayplot +  plot_annotation(title = 'Mean Temperatures in Dif
 ggsave("4wayD.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
+rm('march', 'june', 'september', 'december', 'rollingMean10_5', 'rollingMean20_10', 'marchD2', 'juneD2', 'septemberD2', 'decemberD2')

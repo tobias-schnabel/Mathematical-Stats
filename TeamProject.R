@@ -117,9 +117,9 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
     mmdd <- str_pad(as.character(mmdd), 4, side = "left", pad = '0')
     
     subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
-    ][, md := format(as.Date(DateCol), "%m%d")]
+    ][, md := format(as.Date(DateCol), "%m%d")][, yd := format(as.Date(DateCol), "%Y%m%d")]
     
-    compSet <- subset[mmdd == md, .(Date = md, eelde, de_bilt, maastricht)]
+    compSet <- subset[mmdd == md, .(Date = md, eelde, de_bilt, maastricht, yd)]
     return(compSet)
   }
   
@@ -129,37 +129,30 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
     subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
     ][, md := format(as.Date(DateCol), "%m%d")]
     
-    compSet <- subset[mmdd == md, .(Date = md, Eelde = eelde, De.Bilt = de_bilt, Maastricht = maastricht)]
+    compSet <- subset[mmdd == md, .(Date = DateCol, Eelde = eelde, De.Bilt = de_bilt, Maastricht = maastricht)]
     ret <- melt(compSet, id.vars = "Date", measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                 variable.factor = T, variable.name = "City", value.name = "Temperature")[, Citymean := mean(Temperature)]
+    
     return(ret)
   } 
 }
 
 #gen datasets needed
- {
-   march15 <- subsetDate(315)
-   
-   march <- subsetMonthLong(3)
-   june <- subsetMonthLong(6)
-   september <- subsetMonthLong(9)
-   december <- subsetMonthLong(12)
-   
-   february <- subsetMonth(2)
-   
-   rollingMean10_5 <- xYearYoverlapStat(10, 5, mean)
-   rollingMean20_10 <- xYearYoverlapStat(20, 10, mean)
-   
-   meanTable10y <- xYearStat(10, mean)
-   meanTable5y <- xYearStat(5, mean)
-   meanTable50y <- xYearStat(50, mean)
-   medianTable10y <- xYearStat(10, median)
-   
-   meanTable10mo <- xMonthStat(10, mean)
-   meanTable10mo <- xMonthStat(10, mean)
-   medianTable5mo <- xMonthStat(5, median)
-   
-   meanTable20d <- xDayStat(20, mean)
+{
+  #rolling window plots
+  rollingMean10_5 <- xYearYoverlapStat(10, 5, mean)
+  rollingMean20_10 <- xYearYoverlapStat(20, 10, mean)
+  
+  # february <- subsetMonth(2)
+
+  meanTable10y <- xYearStat(10, mean)
+  meanTable5y <- xYearStat(5, mean)
+  meanTable50y <- xYearStat(50, mean)
+  medianTable10y <- xYearStat(10, median)
+  meanTable10mo <- xMonthStat(10, mean)
+  meanTable10mo <- xMonthStat(10, mean)
+  medianTable5mo <- xMonthStat(5, median)
+  meanTable20d <- xDayStat(20, mean)
 }
 
 #test for structural change
@@ -226,6 +219,16 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
   setnames(structtabBP, "rn", "City")
   rm('ybpm','ybpe', 'ybpd', 'mbpd', 'mbpe', 'structmat3')
 }
+
+#subset according to breakpoint results
+prebreakY <- da[year <= 1961]
+postbreakY <- da[year > 1961]
+prebreakM <- dm[month <= 196210]
+postbreakM <- dm[month > 196210]
+
+#test for differences in means/medians/vars
+
+
 
 
 #simple OLS
