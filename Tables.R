@@ -18,12 +18,15 @@ stargazer(ddSS, out.header = F, title = "Daily Data",
 
 
 #time series break tests
-stargazer(structtabY, out.header = F, summary = F,  title = "Structural Break in Yearly Data",
-          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBY")
+print(xtable(structtabY, align = "llll", caption = "Structural Break in Yearly Data", digits = 5), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBY")
 
-stargazer(structtabM, out.header = F, summary = F,  title = "Structural Break in Yearly Data",
-          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBM")
+print(xtable(structtabM, align = "llll", caption = "Structural Break in Monthly Data", digits = 5), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBM")
 
-stargazer(structtabBP, out.header = F, summary = F, digit.separate = 0 ,
-          title = "Structural Break Breakpoints",
-          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBBP")
+print(xtable(structtabBP, align = "llcc", caption = "Structural Break Breakpoints", digits = c(0,0,0,2)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/SBBP")
+
+
+
+

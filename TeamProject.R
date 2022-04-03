@@ -209,11 +209,11 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
   structmat3[1,1] <- da[ID == ybpd$breakpoints, year]
   
   mbpm <-  breakpoints(dm$month ~ dm$maastricht, h = 0.35, breaks = 1)
-  structmat3[3,2] <- dm[ID == mbpm$breakpoints, month]
+  structmat3[3,2] <- dm[ID == mbpm$breakpoints, month]/100
   mbpe <- breakpoints(dm$month ~ dm$eelde, h = 0.35, breaks = 1)
-  structmat3[2,2] <- dm[ID == mbpe$breakpoints, month]
+  structmat3[2,2] <- dm[ID == mbpe$breakpoints, month]/100
   mbpd <- breakpoints(dm$month ~ dm$de_bilt, h = 0.35, breaks = 1)
-  structmat3[1,2] <- dm[ID == mbpd$breakpoints, month]
+  structmat3[1,2] <- dm[ID == mbpd$breakpoints, month]/100
   
   structtabBP <- as.data.table(structmat3, keep.rownames = T)
   setnames(structtabBP, "rn", "City")
@@ -227,7 +227,9 @@ prebreakM <- dm[month <= 196210]
 postbreakM <- dm[month > 196210]
 
 #test for differences in means/medians/vars
-
+testmat1 <- matrix(nrow = 3, ncol=2)
+rownames(testmat1) <- c('De Bilt', 'Eelde', 'Maastricht')
+colnames(testmat1) <- c('t-Statistic', 'p-value')
 
 
 
