@@ -222,16 +222,59 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
 
 #subset according to breakpoint results
 prebreakY <- da[year <= 1961]
-postbreakY <- da[year > 1961]
+postbreakY <- da[year > 1961 & year < 2017]
 prebreakM <- dm[month <= 196210]
-postbreakM <- dm[month > 196210]
+postbreakM <- dm[month > 196210 & month < (max(month)-204)]
 
-#test for differences in means/medians/vars
-testmat1 <- matrix(nrow = 3, ncol=2)
+#test for differences in means (annual)
+testmat1 <- matrix(nrow = 3, ncol=4)
 rownames(testmat1) <- c('De Bilt', 'Eelde', 'Maastricht')
-colnames(testmat1) <- c('t-Statistic', 'p-value')
+colnames(testmat1) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
 
+ttmAM <- t.test(prebreakY$maastricht, postbreakY$maastricht, paired = T)
+ttmAE <- t.test(prebreakY$eelde, postbreakY$eelde, paired = T)
+ttmAD <- t.test(prebreakY$de_bilt, postbreakY$de_bilt, paired = T)
 
+testmat1[1,1] <- ttmAD$statistic
+testmat1[2,1] <- ttmAE$statistic
+testmat1[3,1] <- ttmAM$statistic
+
+testmat1[1,2] <- ttmAD$p.value
+testmat1[2,2] <- ttmAE$p.value
+testmat1[3,2] <- ttmAM$p.value
+
+testmat1[1,3] <- ttmAD$conf.int[1:1]
+testmat1[2,3] <- ttmAE$conf.int[1:1]
+testmat1[3,3] <- ttmAM$conf.int[1:1]
+
+testmat1[1,4] <- ttmAD$conf.int[2:2]
+testmat1[2,4] <- ttmAE$conf.int[2:2]
+testmat1[3,4] <- ttmAM$conf.int[2:2]
+
+#test for differences in means (monthly)
+testmat2 <- matrix(nrow = 3, ncol=4)
+rownames(testmat2) <- c('De Bilt', 'Eelde', 'Maastricht')
+colnames(testmat2) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
+
+ttmMM <- t.test(prebreakM$maastricht, postbreakM$maastricht, paired = T)
+ttmME <- t.test(prebreakM$eelde, postbreakM$eelde, paired = T)
+ttmMD <- t.test(prebreakM$de_bilt, postbreakM$de_bilt, paired = T)
+
+testmat2[1,1] <- ttmAD$statistic
+testmat2[2,1] <- ttmAE$statistic
+testmat2[3,1] <- ttmAM$statistic
+
+testmat2[1,2] <- ttmAD$p.value
+testmat2[2,2] <- ttmAE$p.value
+testmat2[3,2] <- ttmAM$p.value
+
+testmat2[1,3] <- ttmAD$conf.int[1:1]
+testmat2[2,3] <- ttmAE$conf.int[1:1]
+testmat2[3,3] <- ttmAM$conf.int[1:1]
+
+testmat2[1,4] <- ttmAD$conf.int[2:2]
+testmat2[2,4] <- ttmAE$conf.int[2:2]
+testmat2[3,4] <- ttmAM$conf.int[2:2]
 
 #simple OLS
 OLS <- function(x,y){
