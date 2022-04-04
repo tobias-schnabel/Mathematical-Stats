@@ -74,5 +74,10 @@ print(xtable(testmat22, align = "lcccc", caption = "F-tests, Yearly Data, 1975 B
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-CBY")
 
 print(xtable(testmat24, align = "lcccc", caption = "F-tests, Monthly Data, 1975 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
->>>>>>> 6ea7fa9929b7325d3f6a45c72bce1314452d4d1c
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-CBM")
+
+print(xtable(testmatMan, align = "lcccc", caption = "t-tests, 1975 Break", digits = c(4,4,7,4,4)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/t-t-man")
+
+print(xtable(regMat, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8)), caption.placement = 'top',
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/reg-man")

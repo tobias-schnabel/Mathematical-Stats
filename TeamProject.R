@@ -2,8 +2,8 @@
 
 rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
-packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "scales", "strucchange",
-              "tidyverse", "xtable", "knitr", "stargazer", "patchwork", "remotes", "broom", "purrr")
+packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "scales", "strucchange", 
+              "skedastic", "tidyverse", "xtable", "knitr", "stargazer", "patchwork", "remotes", "broom", "purrr")
 # package grateful must be installed by hand# install.packages("remotes")
 remotes::install_github("Pakillo/grateful")
 # Install packages not yet installed
@@ -507,28 +507,81 @@ postCBM <- dm[month > 197501]
 #manual tests
 {
   #manual Break test
+  #left-sided: H0: mean(preCBY) >= mean(postCBY), H1: mean(preCBY) < mean(postCBY)
+  #diff: H0: mean(postCBY)-mean(preCBY) <0 H1: mean(postCBY)-mean(preCBY) >0
+  #compute differences for pairs of obs 
+  diff <- postCBY[, .(de_bilt, eelde, maastricht)] - preCBY[, .(de_bilt, eelde, maastricht)]
   
-  #manual CB
+  testmatMan <- matrix(nrow = 3, ncol=4)
+  rownames(testmatMan) <- c('De Bilt', 'Eelde', 'Maastricht')
+  colnames(testmatMan) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
+  
+  testD <- t.test(diff$de_bilt, alternative = "g", var.equal = F)
+  testE <- t.test(diff$eelde, alternative = "g", var.equal = F)
+  testM <- t.test(diff$maastricht, alternative = "g", var.equal = F)
+  
+  testmatMan[1,1] <- testD$statistic
+  testmatMan[1,2] <- testD$p.value
+  testmatMan[1,3] <- testD$conf.int[1:1]
+  testmatMan[1,4] <- testD$conf.int[2:2]
+  
+  testmatMan[2,1] <- testE$statistic
+  testmatMan[2,2] <- testE$p.value
+  testmatMan[2,3] <- testE$conf.int[1:1]
+  testmatMan[2,4] <- testE$conf.int[2:2]
+
+  testmatMan[3,1] <- testM$statistic
+  testmatMan[3,2] <- testM$p.value
+  testmatMan[3,3] <- testM$conf.int[1:1]
+  testmatMan[3,4] <- testM$conf.int[2:2]
+  
+  
+}
+
+#white test for heteroscedasticity
+{
   
 }
 
 
 #simple OLS
-OLS <- function(x,y){
-  beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))
-  alpha <- mean(y) - beta * mean(x)
-  return(c(alpha, beta))
+{
+  OLS <- function(resp,pred){
+      y <- as.matrix(resp)
+      X <- as.matrix(cbind(1,pred))
+      beta <- solve(t(X)%*%X)%*%t(X)%*%y
+      res <- as.matrix(y-beta[1]-beta[2]*X[,2])
+      n <- length(resp)
+      k <- ncol(X)
+      VCV <- 1/(n-k)*as.numeric(t(res)%*%res)*solve(t(X)%*%X)
+      se <- sqrt(diag(VCV))
+      p_val <- rbind(2*pt(abs(beta[1]/se[1]),df=n-k,
+                            lower.tail= FALSE),
+                       2*pt(abs(beta[2]/se[2]),df=n-k,
+                            lower.tail= FALSE))
+      #bundle to return
+      outMat <- matrix(nrow = 2, ncol=3)
+      rownames(outMat) <- c('alpha', 'beta')
+      colnames(outMat) <- c('estimate', 'se', 'p-value')
+      outMat[1,1] <- beta[1:1]
+      outMat[2,1] <- beta[2:2]
+      outMat[1,2] <- se[1:1]
+      outMat[2,2] <- se[2:2]
+      outMat[1,3] <- p_val[1:1]
+      outMat[2,3] <- p_val[2:2]
+      return(outMat)
+    }
+   
+ 
+  OLS(da$maastricht, da$year)
+  
+  lm(da$maastricht ~ da$year)
+  
 }
-testmat6
+regMat <- OLS(da$maastricht, da$year)
+test <- lm(da$maastricht ~ da$year)
 
-OLS(da$Maastricht, da$DeBilt)
 
-#confidence interval 95%
-CI <- function(n, x, m, sd){
-  upperbound <- (qnorm(0.975)*sd)/sqrt(n)+x
-  lowerbound <- -(qnorm(0.975)*sd)/sqrt(n)+x
-  return(c(lowerbound, upperbound))
-}
 
 if (Sys.info()[7] == "ts") {
   #credit OSS authors
