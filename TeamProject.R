@@ -504,6 +504,15 @@ postCBM <- dm[month > 197501]
   
 }
 
+#manual tests
+{
+  #manual Break test
+  
+  #manual CB
+  
+}
+
+
 #simple OLS
 OLS <- function(x,y){
   beta <- t(x - mean(x)) %*% (y - mean(y)) / crossprod(x - mean(x))

@@ -51,7 +51,7 @@ print(xtable(testmat5, align = "lccc|c|c|c", caption = "t-tests, 10-Year Medians
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/tT10Ymedian")
 
 #F-tests
-<<<<<<< HEAD
+
 print(xtable(testmat6, align = "lccccc", caption = "F-tests, Yearly Data, 1961 Break", digits = c(5,5,5,7,4,4)), caption.placement = 'top',
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-Y")
 
@@ -62,7 +62,8 @@ print(xtable(testmat22, align = "lcccc", caption = "F-tests, Yearly Data, 1975 B
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-CBY")
 
 print(xtable(testmat24, align = "lccccc", caption = "F-tests, Monthly Data, 1975 Break", digits = c(5,5,5,7,4,4)), caption.placement = 'top',
-=======
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-CBM")
+
 print(xtable(testmat6, align = "lcccc", caption = "F-tests, Yearly Data, 1961 Break", digits = c(5,3,7,4,4)), caption.placement = 'top',
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/F-test-Y")
 
