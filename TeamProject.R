@@ -579,6 +579,13 @@ postCBM <- dm[month > 197501]
   
 }
 regMat <- OLS(da$maastricht, da$year)
+regMat2 <- OLS(da$de_bilt, da$year)
+regMat3 <- OLS(da$maastricht, da$year)
+
+regMatM <- OLS(dm$maastricht, dm$month)
+regMatM2 <- OLS(dm$de_bilt, dm$month)
+regMatM3 <- OLS(dm$maastricht, dm$month)
+
 test <- lm(da$maastricht ~ da$year)
 
 
