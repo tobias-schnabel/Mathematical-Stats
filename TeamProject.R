@@ -604,5 +604,7 @@ invisible(source("Tidy.R"))
 invisible(source("Plots.R"))
 invisible(source("Tables.R"))
 ########################R File########################
-file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/', overwrite = T)
+file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+file.copy('Plots.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+file.copy('Tables.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
 }

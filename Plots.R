@@ -20,7 +20,7 @@ TSA <- ggplot(daLong, aes(x = Year, y = Temperature)) +
   xlim(1905, 2025) + ggtitle("Annual Data")
 
 ggsave("TSA.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 TSABP <- ggplot(daLong, aes(x = Year, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
@@ -29,7 +29,7 @@ TSABP <- ggplot(daLong, aes(x = Year, y = Temperature)) +
   xlim(1945, 1975) + ggtitle("Annual Data: Breakpoint")
 
 ggsave("TSA_BP.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 TS4_16 <- ggplot(april6, aes(x = Date, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Date') +
@@ -38,7 +38,7 @@ TS4_16 <- ggplot(april6, aes(x = Date, y = Temperature)) +
   ggtitle("Temperatures on April 6")
 
 ggsave("TS4_16.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
 # dat <- dmLong[, Month := yearmon(Month)]
@@ -49,7 +49,7 @@ TSM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
   xlim(190501, 202501) + ggtitle("Monthly Data")
 
 ggsave("TSM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 TSMS <- ggplot(dmsLong, aes(x = Month, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
@@ -58,7 +58,7 @@ TSMS <- ggplot(dmsLong, aes(x = Month, y = Temperature)) +
   xlim(190501, 202501) + ggtitle("Smoothed Monthly Data")
 
 ggsave("TSMS.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
 #normality
@@ -70,7 +70,7 @@ qqY <-  ggplot(daLong, aes(sample = Temperature)) +
 
 
 ggsave("qqY.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 qqM <-  ggplot(dmLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
@@ -80,7 +80,7 @@ qqM <-  ggplot(dmLong, aes(sample = Temperature)) +
 
 
 ggsave("qqM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 qqMs <-  ggplot(dmsLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
@@ -90,7 +90,7 @@ qqMs <-  ggplot(dmsLong, aes(sample = Temperature)) +
 
 
 ggsave("qqMs.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 qqD <-  ggplot(ddLong, aes(sample = Temperature)) +
   stat_qq(aes(color = City)) +
@@ -100,7 +100,7 @@ qqD <-  ggplot(ddLong, aes(sample = Temperature)) +
 
 
 ggsave("qqD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 #histograms
 histY <- ggplot(daLong, aes(x = Temperature, color = City)) + 
@@ -111,7 +111,7 @@ histY <- ggplot(daLong, aes(x = Temperature, color = City)) +
   scale_color_tableau()
 
 ggsave("Ahist.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
 histM <- ggplot(dmLong, aes(x = Temperature, color = City)) + 
@@ -122,7 +122,7 @@ histM <- ggplot(dmLong, aes(x = Temperature, color = City)) +
   scale_color_tableau()
 
 ggsave("Mhist.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
 #densities
@@ -135,7 +135,7 @@ densplotyears <- ggplot(daLong, aes(x = Temperature, color = City)) + geom_densi
 
 
 ggsave("AD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 densplotmonths <- ggplot(dmLong, aes(x = Temperature, color = City)) + geom_density() +
   geom_vline(data=citymeanM, aes(xintercept = Citymean, color = City), linetype = "dashed") +
@@ -144,7 +144,7 @@ densplotmonths <- ggplot(dmLong, aes(x = Temperature, color = City)) + geom_dens
   scale_color_tableau()
 
 ggsave("MD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
 densplotmonthsS <- ggplot(dmsLong, aes(x = Temperature, color = City)) + geom_density() +
@@ -154,7 +154,7 @@ densplotmonthsS <- ggplot(dmsLong, aes(x = Temperature, color = City)) + geom_de
   scale_color_tableau()
 
 ggsave("MSD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 densplotDays <- ggplot(ddLong, aes(x = Temperature, color = City)) + geom_density() +
   geom_vline(data=citymeanD, aes(xintercept = Citymean, color = City), linetype = "dashed") +
@@ -171,7 +171,7 @@ densplotRoll10_5 <- ggplot(rolling10_5L, aes(x = Temperature, color = City))+ ge
   scale_color_tableau()
 
 ggsave("10_5D.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 densplotRoll20_10 <- ggplot(rolling20_10L, aes(x = Temperature, color = City))+ geom_density() +
   theme_minimal() + ylab("Density")+ ggtitle("Rolling 10 Year Window 20 Year Mean Temperatures") +
@@ -179,44 +179,8 @@ densplotRoll20_10 <- ggplot(rolling20_10L, aes(x = Temperature, color = City))+ 
   scale_color_tableau()
 
 ggsave("20_10D.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
-
-marchD <- ggplot(march, aes(x = Temperature, color = City)) + geom_density() +
-  geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
-  theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in March") +
-  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  scale_color_tableau()
-
-ggsave("marchD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
-
-juneD <- ggplot(june, aes(x = Temperature, color = City)) + geom_density() +
-  geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
-  theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in June") +
-  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  scale_color_tableau()
-
-ggsave("juneD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
-
-septemberD <- ggplot(september, aes(x = Temperature, color = City)) + geom_density() +
-  geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
-  theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in September") +
-  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))+
-  scale_color_tableau()
-
-ggsave("septemberD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
-
-decemberD <- ggplot(december, aes(x = Temperature, color = City)) + geom_density() +
-  geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
-  theme_minimal() + ylab("Density")+ ggtitle("Mean Temperatures in December") +
-  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5))+
-  scale_color_tableau()
-
-ggsave("decemberD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
 marchD2 <- ggplot(march, aes(x = Temperature, color = City)) + geom_density() +
   geom_vline(aes(xintercept = Citymean, color = City), linetype = "dashed") +
@@ -252,8 +216,7 @@ fourwayplot <-  fourwayplot +  plot_annotation(title = 'Mean Temperatures in Dif
 #, family="Times New Roman"
 
 ggsave("4wayD.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
-
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
 #test stats for 5y mean tables
@@ -275,11 +238,7 @@ hyptestplot <- ggplot(hyptestdat, aes(x= hyptestdat$Year, y= hyptestdat$value)) 
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "none") +
   ggtitle("t-test Significance Levels, t-tests on 5-year Means, Base Year 1911")
 
-ggsave("hyptestlevels",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+ggsave("hyptestplot.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
-
-
-
-
 
 rm('march', 'june', 'september', 'december', 'rollingMean10_5', 'rollingMean20_10', 'marchD2', 'juneD2', 'septemberD2', 'decemberD2')
