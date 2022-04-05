@@ -661,6 +661,7 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
 
 
 #####################BOOTSTRAP###
+#BS functions
 OLS_BS <- function(resp,pred){
   y <- as.matrix(resp)
   X <- as.matrix(cbind(1,pred))
@@ -691,26 +692,12 @@ OLS_BS <- function(resp,pred){
     (1/(n-2))*OLS_BS(y,x)[3]
   }
   
-  
-  #this calculate S_xy
-  S_xy <- function(x,y){
-    I=rep(1,nrow(x))
-    j<-((c(x)-mean(x))*(c(y)-mean(y)))%*%I
-    j[1]
-  }
-  S_yy <- function(y){
-    I=rep(1,nrow(y))
-    j<-((c(y)-mean(y))^2)%*%I
-    j[1]
-  }
-  
-  Beta.0 <- 0  #H0: Beta.0<=0 H1: Beta.0>0
-  
   crit_val_BS <- function(Bootstrap){
     alpha <- 0.05															# Choose a significance level alpha
     c.alpha.star <- quantile(Bootstrap, probs = 1 - alpha)						# Get the bootstrap critical value
     return(c.alpha.star)
   }
+  
   Q_BS <- function(Beta, Beta.0, X, Y){
     S_xx <- var(X)
     S_2 <- cov(X, Y)
@@ -825,34 +812,58 @@ OLS_BS <- function(resp,pred){
   }
 }
 
+#prep data
 {
-  #get data ready
   aD <- OLS_BS(da$de_bilt, da$year)[1]
   bD <- OLS_BS(da$de_bilt, da$year)[2]
   aM <- OLS_BS(da$maastricht, da$year)[1]
   bM <- OLS_BS(da$maastricht, da$year)[2]
   aE <- OLS_BS(da$eelde, da$year)[1]
   bE <- OLS_BS(da$eelde, da$year)[2]
+  
+  aDM <- OLS_BS(dm$de_bilt, dm$month)[1]
+  bDM <- OLS_BS(dm$de_bilt, dm$month)[2]
+  aMM <- OLS_BS(dm$maastricht, dm$month)[1]
+  bMM <- OLS_BS(dm$maastricht, dm$month)[2]
+  aEM <- OLS_BS(dm$eelde, dm$month)[1]
+  bEM <- OLS_BS(dm$eelde, dm$month)[2]
 }
+
+#BS analysis
 {
+  Beta.0 <- 0 #beta under H0: Beta.0<=0 H1: Beta.0>0
   set.seed(234987)
   
   n <- nrow(da)		
   alpha <- 0.05
+  
   #Quantities
-  QM <- Q_BS(bM, Beta.0, da$year, da$maastricht)
-  QD <- Q_BS(bM, Beta.0, da$year, da$de_bilt)
-  QE <- Q_BS(bM, Beta.0, da$year, da$eelde)
+  QMY <- Q_BS(bM, Beta.0, da$year, da$maastricht)
+  QDY <- Q_BS(bM, Beta.0, da$year, da$de_bilt)
+  QEY <- Q_BS(bM, Beta.0, da$year, da$eelde)
+  
+  QMM <- Q_BS(bM, Beta.0, dm$maastricht, dm$maastricht)
+  QDM <- Q_BS(bM, Beta.0, dm$maastricht, dm$de_bilt)
+  QEM <- Q_BS(bM, Beta.0, dm$maastricht, dm$eelde)
   
   #BS
   PairsBSM <- Pairs_BS(n, da$year, da$maastricht, bM)
   PairsBSD <- Pairs_BS(n, da$year, da$de_bilt, bD)
   PairsBSE <- Pairs_BS(n, da$year, da$eelde, bE)
+  #monthly
+  PairsBSMM <- Pairs_BS(n, dm$month, dm$maastricht, bMM)
+  PairsBSDM <- Pairs_BS(n, dm$month, dm$de_bilt, bDM)
+  PairsBSEM <- Pairs_BS(n, dm$month, dm$eelde, bEM)
   
   ResidBSM <- Resid_BS(length(da$year), da$maastricht, da$year, ResidualVector(length(da$year), da$maastricht, da$year, aM, bM), aM, bM)
   ResidBSD <- Resid_BS(length(da$year), da$de_bilt, da$year, ResidualVector(length(da$year), da$de_bilt, da$year, aD, bD), aD, bD)
   ResidBSE <- Resid_BS(length(da$year), da$eelde, da$year, ResidualVector(length(da$year), da$eelde, da$year, aE, bE), aE, bE)
  
+  #monthly
+  ResidBSMM <- Resid_BS(length(dm$month), dm$maastricht, dm$month, ResidualVector(length(dm$month), dm$maastricht, dm$mont, aMM, bMM), aMM, bMM)
+  ResidBSDM <- Resid_BS(length(dm$month), dm$de_bilt, dm$month, ResidualVector(length(dm$month), dm$de_bilt, dm$mont, aDM, bDM), aDM, bDM)
+  ResidBSEM <- Resid_BS(length(dm$month), dm$eelde, dm$month, ResidualVector(length(dm$month), dm$eelde, dm$mont, aEM, bEM), aEM, bEM)
+  
    #CIs
   CIPairsM <- BS_Int(bM, quantile(PairsBSM, probs = 1-(alpha/2)), quantile(PairsBSM, probs = (alpha/2)), S_2(da$year, da$maastricht), da$maastricht)
   CIResidM <- BS_Int(bM, quantile(ResidBSM, probs = 1-(alpha/2)), quantile(ResidBSM, probs = (alpha/2)), S_2(da$year, da$maastricht), da$maastricht)
@@ -860,9 +871,69 @@ OLS_BS <- function(resp,pred){
   CIPairsD <- BS_Int(bD, quantile(PairsBSD, probs = 1-(alpha/2)), quantile(PairsBSD, probs = (alpha/2)), S_2(da$year, da$de_bilt), da$de_bilt)
   CIResidD <- BS_Int(bD, quantile(ResidBSD, probs = 1-(alpha/2)), quantile(ResidBSD, probs = (alpha/2)), S_2(da$year, da$de_bilt), da$de_bilt)
   
-  CIPairsM <- BS_Int(bE, quantile(PairsBSE, probs = 1-(alpha/2)), quantile(PairsBSE, probs = (alpha/2)), S_2(da$year, da$eelde), da$eelde)
-  CIResidM <- BS_Int(bE, quantile(ResidBSE, probs = 1-(alpha/2)), quantile(ResidBSE, probs = (alpha/2)), S_2(da$year, da$eelde), da$eelde)
+  CIPairsE <- BS_Int(bE, quantile(PairsBSE, probs = 1-(alpha/2)), quantile(PairsBSE, probs = (alpha/2)), S_2(da$year, da$eelde), da$eelde)
+  CIResidE <- BS_Int(bE, quantile(ResidBSE, probs = 1-(alpha/2)), quantile(ResidBSE, probs = (alpha/2)), S_2(da$year, da$eelde), da$eelde)
   
+  #monthly
+  CIPairsMM <- BS_Int(bMM, quantile(PairsBSMM, probs = 1-(alpha/2)), quantile(PairsBSMM, probs = (alpha/2)), S_2(dm$month, dm$maastricht), dm$maastricht)
+  CIResidMM <- BS_Int(bMM, quantile(ResidBSMM, probs = 1-(alpha/2)), quantile(ResidBSMM, probs = (alpha/2)), S_2(dm$month, dm$maastricht), dm$maastricht)
+  
+  CIPairsDM <- BS_Int(bDM, quantile(PairsBSDM, probs = 1-(alpha/2)), quantile(PairsBSDM, probs = (alpha/2)), S_2(dm$month, dm$de_bilt), dm$de_bilt)
+  CIResidDM <- BS_Int(bDM, quantile(ResidBSDM, probs = 1-(alpha/2)), quantile(ResidBSDM, probs = (alpha/2)), S_2(dm$month, dm$de_bilt), dm$de_bilt)
+  
+  CIPairsEM <- BS_Int(bEM, quantile(PairsBSEM, probs = 1-(alpha/2)), quantile(PairsBSEM, probs = (alpha/2)), S_2(dm$month, dm$eelde), dm$eelde)
+  CIResidEM <- BS_Int(bEM, quantile(ResidBSEM, probs = 1-(alpha/2)), quantile(ResidBSEM, probs = (alpha/2)), S_2(dm$month, dm$eelde), dm$eelde)
+  
+  BSmat1 <- matrix(nrow = 12, ncol=3)
+  rownames(BSmat1) <- c('De Bilt, Yearly Data, Pairs', 'De Bilt, Yearly Data, Residuals', 'Eelde, Yearly Data, Pairs', 
+                        'Eelde, Yearly Data, Residuals','Maastricht, Yearly Data, Pairs','Maastricht, Yearly Data, Residuals',
+                        'De Bilt, Monthly Data, Pairs', 'De Bilt, Monthly Data, Residuals', 'Eelde, Monthly Data, Pairs', 
+                        'Eelde, Monthly Data, Residuals','Maastricht, Monthly Data, Pairs','Maastricht, Monthly Data, Residuals')
+  colnames(BSmat1) <- c('Q^*', 'CI lower', 'CI upper')
+  
+  BSmat1[1,1] <- QDY
+  BSmat1[3,1] <- QEY
+  BSmat1[5,1] <- QMY
+  BSmat1[7,1] <- QDY
+  BSmat1[9,1] <- QEY
+  BSmat1[11,1] <- QMY
+  
+  
+  BSmat1[1,2] <- CIPairsD[1:1]
+  BSmat1[2,2] <- CIResidD[1:1]
+  
+  BSmat1[3,2] <- CIPairsE[1:1]
+  BSmat1[4,2] <- CIResidE[1:1]
+  
+  BSmat1[5,2] <- CIPairsM[1:1]
+  BSmat1[6,2] <- CIResidM[1:1]
+  
+  BSmat1[7,2] <- CIPairsDM[1:1]
+  BSmat1[8,2] <- CIResidDM[1:1]
+  
+  BSmat1[9,2] <- CIPairsEM[1:1]
+  BSmat1[10,2] <- CIResidEM[1:1]
+  
+  BSmat1[11,2] <- CIPairsMM[1:1]
+  BSmat1[12,2] <- CIResidMM[1:1]
+  
+  BSmat1[1,3] <- CIPairsD[2:2]
+  BSmat1[2,3] <- CIResidD[2:2]
+  
+  BSmat1[3,3] <- CIPairsE[2:2]
+  BSmat1[4,3] <- CIResidM[2:2]
+  
+  BSmat1[5,3] <- CIPairsM[2:2]
+  BSmat1[6,3] <- CIResidM[2:2]
+  
+  BSmat1[7,3] <- CIPairsDM[2:2]
+  BSmat1[8,3] <- CIResidDM[2:2]
+  
+  BSmat1[9,3] <- CIPairsEM[2:2]
+  BSmat1[10,3] <- CIResidMM[2:2]
+  
+  BSmat1[11,3] <- CIPairsMM[2:2]
+  BSmat1[12,3] <- CIResidMM[2:2]
   
   ##BS t-test
   BStM <- BS_t(da$maastricht)
@@ -874,7 +945,15 @@ OLS_BS <- function(resp,pred){
   BStE <- BS_t(da$eelde)
   BSCItE <- BS_CI_t(da$eelde, quantile(BStE,probs=1-(alpha/2)), quantile(BStE,probs=(alpha/2)))
  
+  #monthly
+  BStMM <- BS_t(dm$maastricht)
+  BSCItMM <- BS_CI_t(dm$maastricht, quantile(BStMM,probs=1-(alpha/2)), quantile(BStMM,probs=(alpha/2)))
   
+  BStDM <- BS_t(dm$de_bilt)
+  BSCItDM <- BS_CI_t(dm$de_bilt, quantile(BStDM,probs=1-(alpha/2)), quantile(BStDM,probs=(alpha/2)))
+  
+  BStEM <- BS_t(dm$eelde)
+  BSCItEM <- BS_CI_t(dm$eelde, quantile(BStEM,probs=1-(alpha/2)), quantile(BStEM,probs=(alpha/2)))
   
 }
 
