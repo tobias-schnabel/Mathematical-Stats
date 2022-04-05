@@ -848,6 +848,13 @@ OLS_BS <- function(resp,pred){
   PairsBSM <- Pairs_BS(n, da$year, da$maastricht, bM)
   PairsBSD <- Pairs_BS(n, da$year, da$de_bilt, bD)
   PairsBSE <- Pairs_BS(n, da$year, da$eelde, bE)
+<<<<<<< HEAD
+=======
+  
+  ResidBSM <- Resid_BS(length(da$year), da$maastricht, da$year, ResidualVector(length(da$year), da$maastricht, da$year, aM, bM), aM, bM)
+  ResidBSD <- Resid_BS(length(da$year), da$de_bilt, da$year, ResidualVector(length(da$year), da$de_bilt, da$year, aD, bD), aD, bD)
+  ResidBSE <- Resid_BS(length(da$year), da$eelde, da$year, ResidualVector(length(da$year), da$eelde, da$year, aE, bE), aE, bE)
+>>>>>>> bbc814659fa7bf05607b08ecf6cc39ed33c2ccd7
   
   ResidBSM <- Resid_BS(length(da$year), da$maastricht, da$year, ResidualVector(length(da$year), da$maastricht, da$year, aM, bM), aM, bM)
   ResidBSD <- Resid_BS(length(da$year), da$de_bilt, da$year, ResidualVector(length(da$year), da$de_bilt, da$year, aD, bD), aD, bD)
@@ -862,8 +869,11 @@ OLS_BS <- function(resp,pred){
   CIPairsM <- BS_Int(bE, quantile(PairsBSE, probs = 1-(alpha/2)), quantile(PairsBSE, probs = (alpha/2)), S_2(da$year, da$eelde), da$eelde)
   CIResidM <- BS_Int(bE, quantile(ResidBSE, probs = 1-(alpha/2)), quantile(ResidBSE, probs = (alpha/2)), S_2(da$year, da$eelde), da$eelde)
   
+<<<<<<< HEAD
   
   ##BS t-test
+=======
+>>>>>>> bbc814659fa7bf05607b08ecf6cc39ed33c2ccd7
   BStM <- BS_t(da$maastricht)
   BSCItM <- BS_CI_t(da$maastricht, quantile(BStM,probs=1-(alpha/2)), quantile(BStM,probs=(alpha/2)))
   
