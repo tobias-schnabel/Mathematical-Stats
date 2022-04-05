@@ -618,7 +618,43 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
 
 #white test for heteroscedasticity
 {
+  testmatHsced <- matrix(nrow = 6, ncol=2)
+  rownames(testmatHsced) <- c('De Bilt, Yearly Data', 'Eelde, Yearly Data', 'Maastricht, Yearly Data',
+                              'De Bilt, Monthly Data', 'Eelde, Monthly Data', 'Maastricht, Monthly Data')
+  colnames(testmatHsced) <- c('Test Statistic', 'p-value')
+  testmatHsced[1,1] <- white_lm(regYD)$statistic
+  testmatHsced[4,1] <- white_lm(regMD)$statistic
+  testmatHsced[1,2] <- white_lm(regYD)$p.value
+  testmatHsced[4,2] <- white_lm(regMD)$p.value
   
+  testmatHsced[2,1] <- white_lm(regYE)$statistic
+  testmatHsced[5,1] <- white_lm(regME)$statistic
+  testmatHsced[2,2] <- white_lm(regYE)$p.value
+  testmatHsced[5,2] <- white_lm(regME)$p.value
+  
+  testmatHsced[3,1] <- white_lm(regYM)$statistic
+  testmatHsced[6,1] <- white_lm(regMM)$statistic
+  testmatHsced[3,2] <- white_lm(regYM)$p.value
+  testmatHsced[6,2] <- white_lm(regMM)$p.value
+  
+  testmatHsced2 <- matrix(nrow = 6, ncol=2)
+  rownames(testmatHsced2) <- c('De Bilt, before 1975', 'Eelde, before 1975', 'Maastricht, before 1975',
+                              'De Bilt, after 1975', 'Eelde, after 1975', 'Maastricht, after 1975')
+  colnames(testmatHsced2) <- c('Test Statistic', 'p-value')
+  testmatHsced2[1,1] <- white_lm(regPreCBYD)$statistic
+  testmatHsced2[4,1] <- white_lm(regPostCBMD)$statistic
+  testmatHsced2[1,2] <- white_lm(regPreCBYD)$p.value
+  testmatHsced2[4,2] <- white_lm(regPostCBMD)$p.value
+  
+  testmatHsced2[2,1] <- white_lm(regPreCBYE)$statistic
+  testmatHsced2[5,1] <- white_lm(regPostCBME)$statistic
+  testmatHsced2[2,2] <- white_lm(regPreCBYE)$p.value
+  testmatHsced2[5,2] <- white_lm(regPostCBME)$p.value
+  
+  testmatHsced2[3,1] <- white_lm(regPreCBYM)$statistic
+  testmatHsced2[6,1] <- white_lm(regPostCBMM)$statistic
+  testmatHsced2[3,2] <- white_lm(regPreCBYM)$p.value
+  testmatHsced2[6,2] <- white_lm(regPostCBMM)$p.value
 }
 
 

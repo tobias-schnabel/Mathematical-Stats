@@ -10,7 +10,7 @@ rollingMean10_5 <- xYearYoverlapStat(10, 5, mean)
 rollingMean20_10 <- xYearYoverlapStat(20, 10, mean)
 
 #date plot
-april6 <- subsetDateLong(406)
+april7 <- subsetDateLong(407)
 ########################Plots########################
 #raw data
 TSA <- ggplot(daLong, aes(x = Year, y = Temperature)) +
@@ -31,13 +31,13 @@ TSABP <- ggplot(daLong, aes(x = Year, y = Temperature)) +
 ggsave("TSA_BP.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
-TS4_16 <- ggplot(april6, aes(x = Date, y = Temperature)) +
+TS4_7 <- ggplot(april7, aes(x = Date, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Date') +
   theme_minimal() + scale_color_tableau() +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  ggtitle("Temperatures on April 6")
+  ggtitle("Temperatures on April 7")
 
-ggsave("TS4_16.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+ggsave("TS4_7.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
@@ -241,4 +241,70 @@ hyptestplot <- ggplot(hyptestdat, aes(x= hyptestdat$Year, y= hyptestdat$value)) 
 ggsave("hyptestplot.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
 
-rm('march', 'june', 'september', 'december', 'rollingMean10_5', 'rollingMean20_10', 'marchD2', 'juneD2', 'septemberD2', 'decemberD2')
+##regression plots
+#red E15759
+#blue 4E79A7
+#orange F28E2B
+regPlotAllY <- ggplot(daLong, aes(x = Year, y = Temperature)) +
+  geom_point(aes(colour = City)) + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(1905, 2025) + ggtitle("Yearly Data") 
+
+ggsave("regYD.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+regYE <- ggplot(filter(daLong, City == 'Eelde'), aes(x = Year, y = Temperature)) +
+  geom_point(colour = '#F28E2B') + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(1905, 2025) + ggtitle("Regression of Year on Temperature in Eelde") +
+  geom_smooth(method='lm', color = '#499894', fill = '#86BCB6')
+
+ggsave("regYE.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+regYD <- ggplot(filter(daLong, City == 'De.Bilt'), aes(x = Year, y = Temperature)) +
+  geom_point(colour = '#E15759') + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(1905, 2025) + ggtitle("Regression of Year on Temperature in De Bilt") +
+  geom_smooth(method='lm', color = '#499894', fill = '#86BCB6')
+
+ggsave("regYD.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+regYM <- ggplot(filter(daLong, City == 'Maastricht'), aes(x = Year, y = Temperature)) +
+  geom_point(colour = '#4E79A7') + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(1905, 2025) + ggtitle("Regression of Year on Temperature in Maastricht") +
+  geom_smooth(method='lm', color = '#499894', fill = '#86BCB6')
+
+ggsave("regYM.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+allRegsY <- ggplot(daLong, aes(x = Year, y = Temperature)) +
+  geom_point(aes(colour = City)) + facet_wrap(vars(City), nrow = 3) + 
+  theme_minimal() + scale_color_tableau() + 
+  theme(panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5), legend.position = 'none') +
+  geom_smooth(method='lm', color = '#499894', fill = '#86BCB6') +
+  labs(y = 'Temperature', x = 'Year', title = "Regressions using Yearly Data",
+       caption = "95% C.I. shown around fitted regression lines")
+
+ggsave("AllRegsY.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+allRegsM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
+  geom_point(aes(colour = City)) + facet_wrap(vars(City), nrow = 3) + 
+  theme_minimal() + scale_color_tableau() + 
+  theme(panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5), legend.position = 'none') +
+  geom_smooth(method='lm', color = '#499894', fill = '#86BCB6') +
+  labs(y = 'Temperature', x = 'Year', title = "Regressions using Mothly Data",
+       caption = "95% C.I. shown around fitted regression lines")
+
+ggsave("AllRegsM.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+                                              

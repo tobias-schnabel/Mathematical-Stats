@@ -79,6 +79,14 @@ print(xtable(testmat24, align = "lccccc", caption = "F-tests, Monthly Data, 1975
 print(xtable(testmatMan, align = "lcccc", caption = "t-tests, 1975 Break", digits = c(4,4,7,4,4)), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/t-t-man")
 
+#print white test results
+print(xtable(testmatHsced, align = "lcc", caption = "White Tests for Heteroskedasticity", digits = c(5,5,5)), caption.placement = 'top', 
+      table.placement = "H", hline.after = c(-1,0,nrow(testmatHsced),3), type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/white")
+
+print(xtable(testmatHsced2, align = "lcc", caption = "White Tests for Heteroskedasticity", digits = c(5,5,5)), caption.placement = 'top', 
+      table.placement = "H", hline.after = c(-1,0,nrow(testmatHsced),3), type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/whiteBreak")
+
+
 #print manual reg results
 print(xtable(regMat, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8)), caption.placement = 'top', table.placement = "H",
         type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMat")
