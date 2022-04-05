@@ -16,7 +16,7 @@ if (any(installed_packages == FALSE)) {
 invisible(lapply(packages, library, character.only = TRUE))
 
 
-Paths = c("/Users/ts/Git/Mathematical_Stats", "Users/chumasharajapakshe/Documents/GitHub/Mathematical_Stats")
+Paths = c("/Users/ts/Git/Mathematical-Stats", "Users/chumasharajapakshe/Documents/GitHub/Mathematical-Stats")
 names(Paths) = c("ts", "chumasharajapakshe")
 setwd(Paths[Sys.info()[7]])
   
