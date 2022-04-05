@@ -537,12 +537,6 @@ postCBM <- dm[month > 197501]
   
 }
 
-#white test for heteroscedasticity
-{
-  
-}
-
-
 #simple OLS
 {
   OLS <- function(resp,pred){
@@ -577,6 +571,7 @@ postCBM <- dm[month > 197501]
   lm(da$maastricht ~ da$year)
   
 }
+
 regMat <- OLS(da$maastricht, da$year)
 regMat2 <- OLS(da$de_bilt, da$year)
 regMat3 <- OLS(da$maastricht, da$year)
@@ -621,8 +616,12 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
   
 }
 
-
+#white test for heteroscedasticity
+{
+  
 }
+
+
 ########################CLEANUP AND EXPORT
 {
   if (Sys.info()[7] == "ts") {
