@@ -586,8 +586,41 @@ regMatM <- OLS(dm$maastricht, dm$month)
 regMatM2 <- OLS(dm$de_bilt, dm$month)
 regMatM3 <- OLS(dm$maastricht, dm$month)
 
-test <- lm(da$maastricht ~ da$year)
-
+#compute and store regressions for export to tables with stargazer (looks nicer)
+{
+  regYM <- lm(da$maastricht ~ da$year)
+  regYD <- lm(da$de_bilt ~ da$year)
+  regYE <- lm(da$eelde ~ da$year)
+  
+  regMM <- lm(dm$maastricht ~ dm$month)
+  regMD <- lm(dm$de_bilt ~ dm$month)
+  regME <- lm(dm$eelde ~ dm$month)
+  
+  regPreBYD <- lm(prebreakY$de_bilt ~ prebreakY$year)
+  regPreBYE <- lm(prebreakY$eelde ~ prebreakY$year)
+  regPreBYM <- lm(prebreakY$maastricht ~ prebreakY$year)
+  
+  regPostBYD <- lm(postbreakY$de_bilt ~ postbreakY$year)
+  regPostBYE <- lm(postbreakY$eelde ~ postbreakY$year)
+  regPostBYM <- lm(postbreakY$maastricht ~ postbreakY$year)
+  
+  regPreCBYD <- lm(preCBY$de_bilt ~ preCBY$year)
+  regPreCBYE <- lm(preCBY$eelde ~ preCBY$year)
+  regPreCBYM <- lm(preCBY$maastricht ~ preCBY$year)
+  
+  regPostCBYD <- lm(postCBY$de_bilt ~ postCBY$year)
+  regPostCBYE <- lm(postCBY$eelde ~ postCBY$year)
+  regPostCBYM <- lm(postCBY$maastricht ~ postCBY$year)
+  
+  regPreCBMD <- lm(preCBM$de_bilt ~ preCBM$month)
+  regPreCBME <- lm(preCBM$eelde ~ preCBM$month)
+  regPreCBMM <- lm(preCBM$maastricht ~ preCBM$month)
+  
+  regPostCBMD <- lm(postCBM$de_bilt ~ postCBM$month)
+  regPostCBME <- lm(postCBM$eelde ~ postCBM$month)
+  regPostCBMM <- lm(postCBM$maastricht ~ postCBM$month)
+  
+}
 
 
 if (Sys.info()[7] == "ts") {

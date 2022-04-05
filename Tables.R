@@ -97,3 +97,32 @@ print(xtable(regMatM2, align = "lccc", caption = "Results of Manual Computation 
 
 print(xtable(regMatM3, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8)), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMatM3")
+
+#print full regression table
+
+##yearly data
+#full
+stargazer(regYD, regYE, regYM, out.header = F, title = "Regressions, Yearly Data", table.placement = "H",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegY")
+#restricted
+stargazer(regPreBYD, regPreBYE, regPreBYM, regPostBYD, regPostBYE, regPostBYM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRB")
+
+stargazer(regPreCBYD, regPreCBYE, regPreCBYM, regPostCBYD, regPostCBYE, regPostCBYM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRCB")
+
+
+##monthly data
+#full
+stargazer(regMD, regME, regMM, out.header = F, title = "Regressions, Monthly Data", table.placement = "H",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegM")
+#restricted
+# stargazer(regPreBMD, regPreBME, regPreBMM, regPostBMD, regPostBME, regPostBMM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
+#           out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRB")
+
+stargazer(regPreCBMD, regPreCBME, regPreCBMM, regPostCBMD, regPostCBME, regPostCBMM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
+          out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRCB")
+
+
+
+
