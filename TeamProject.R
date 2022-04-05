@@ -443,7 +443,6 @@ postCBM <- dm[month > 197501]
   
 }
 
-
 #test for homogeneity of variance (monthly)
 {
   testmat7 <- matrix(nrow = 3, ncol=5)
@@ -572,7 +571,7 @@ postCBM <- dm[month > 197501]
       return(outMat)
     }
    
- 
+  #test correctness
   OLS(da$maastricht, da$year)
   
   lm(da$maastricht ~ da$year)
@@ -623,21 +622,26 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
 }
 
 
-if (Sys.info()[7] == "ts") {
-  #credit OSS authors
-  knitr::write_bib(c(.packages()),
- "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/packages.bib")
-
-  grateful::cite_packages(output = "paragraph", dependencies = T, include.RStudio = T, 
-                out.dir = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/",
-                bib.file = "grateful.bib")
-
-########################Do Plots & Tables################################
-invisible(source("Tidy.R")) 
-invisible(source("Plots.R"))
-invisible(source("Tables.R"))
-########################R File########################
-file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
-file.copy('Plots.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
-file.copy('Tables.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+}
+########################CLEANUP AND EXPORT
+{
+  if (Sys.info()[7] == "ts") {
+    #credit OSS authors
+    knitr::write_bib(c(.packages()),
+                     "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/packages.bib")
+    
+    grateful::cite_packages(output = "paragraph", dependencies = T, include.RStudio = T, 
+                            out.dir = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/",
+                            bib.file = "grateful.bib")
+    
+    ########################Do Plots & Tables################################
+    invisible(source("Tidy.R")) 
+    invisible(source("Plots.R"))
+    invisible(source("Tables.R"))
+    ########################R File########################
+    file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    file.copy('Plots.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    file.copy('Tables.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+  }
+  
 }
