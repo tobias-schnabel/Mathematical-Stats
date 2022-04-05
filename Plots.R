@@ -31,15 +31,21 @@ TSABP <- ggplot(daLong, aes(x = Year, y = Temperature)) +
 ggsave("TSA_BP.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
-TS4_7 <- ggplot(april7, aes(x = Date, y = Temperature)) +
-  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Date') +
+TS4_7 <- ggplot(april7, aes(x = Date, y = Temperature, xmin = as.Date("1907-01-01", "%Y-%m-%d"), xmax = as.Date("2023-01-01", "%Y-%m-%d"))) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
   theme_minimal() + scale_color_tableau() +
-  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
-  ggtitle("Temperatures on April 7")
+  theme( panel.grid.minor = element_blank(), panel.grid.major = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "bottom") +
+  ggtitle("Temperatures on April 7") +
+  geom_text(aes(as.Date("2022-04-07"), 11), label=10, colour = '#4E79A7') + #maastricht
+  geom_text(aes(as.Date("2022-04-07"), 9), label = 9,  colour = '#F28E2B') + #eelde
+  geom_text(aes(as.Date("2022-04-07"), 10), label = 9,  colour = '#E15759')  #debilt
 
-ggsave("TS4_7.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+ggsave("TS4_7.png",  bg = "white", dpi = "retina", width = 20, height = 12, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
+#red E15759
+#blue 4E79A7
+#orange F28E2B
 
 # dat <- dmLong[, Month := yearmon(Month)]
 TSM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
@@ -307,4 +313,58 @@ allRegsM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
 
 ggsave("AllRegsM.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+allRegsYCB <- ggplot(daLong, aes(x = Year, y = Temperature)) +
+  geom_point(aes(colour = City)) + facet_wrap(vars(City), nrow = 3) + 
+  theme_minimal() + scale_color_tableau() + 
+  theme(panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5), legend.position = 'none') +
+  geom_smooth(data = subset(daLong, Year < 1975),  method='lm', fullrange = F, color = '#499894', fill = '#86BCB6') +
+  geom_smooth(data = subset(daLong, Year >= 1975),method='lm', fullrange = F, color = '#B07AA1', fill = '#D4A6C8') +
+  labs(y = 'Temperature', x = 'Year', title = "Regressions using Yearly Data, 1975 Break",
+       caption = "95% C.I. shown around fitted regression lines")
+
+ggsave("AllRegsYCB.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+allRegsYB <- ggplot(daLong, aes(x = Year, y = Temperature)) +
+  geom_point(aes(colour = City)) + facet_wrap(vars(City), nrow = 3) + 
+  theme_minimal() + scale_color_tableau() + 
+  theme(panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5), legend.position = 'none') +
+  geom_smooth(data = subset(daLong, Year < 1961),  method='lm', fullrange = F, color = '#499894', fill = '#86BCB6') +
+  geom_smooth(data = subset(daLong, Year >= 1961),method='lm', fullrange = F, color = '#B07AA1', fill = '#D4A6C8') +
+  labs(y = 'Temperature', x = 'Year', title = "Regressions using Yearly Data, 1961 Break",
+       caption = "95% C.I. shown around fitted regression lines")
+
+ggsave("AllRegsYB.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+allRegsMCB <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
+  geom_point(aes(colour = City)) + facet_wrap(vars(City), nrow = 3) + 
+  theme_minimal() + scale_color_tableau() + 
+  theme(panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5), legend.position = 'none') +
+  geom_smooth(data = subset(dmLong, Month < 197501),  method='lm', fullrange = F, color = '#499894', fill = '#86BCB6') +
+  geom_smooth(data = subset(dmLong, Month >= 197501),method='lm', fullrange = F, color = '#B07AA1', fill = '#D4A6C8') +
+  labs(y = 'Temperature', x = 'Month', title = "Regressions using Monthly Data, 1975 Break",
+       caption = "95% C.I. shown around fitted regression lines")
+
+ggsave("AllRegsMCB.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+allRegsMB <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
+  geom_point(aes(colour = City)) + facet_wrap(vars(City), nrow = 3) + 
+  theme_minimal() + scale_color_tableau() + 
+  theme(panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5), legend.position = 'none') +
+  geom_smooth(data = subset(dmLong, Month < 196102),  method='lm', fullrange = F, color = '#499894', fill = '#86BCB6') +
+  geom_smooth(data = subset(dmLong, Month >= 196102),method='lm', fullrange = F, color = '#B07AA1', fill = '#D4A6C8') +
+  labs(y = 'Temperature', x = 'Month', title = "Regressions using Monthly Data, 1961 Break",
+       caption = "95% C.I. shown around fitted regression lines")
+
+ggsave("AllRegsMB.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+
                                               

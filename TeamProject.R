@@ -658,6 +658,11 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
 }
 
 
+#####################BOOTSTRAP###
+{
+  
+}
+
 ########################CLEANUP AND EXPORT
 {
   if (Sys.info()[7] == "ts") {
