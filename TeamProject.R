@@ -563,7 +563,9 @@ postCBM <- dm[month > 197501]
       outMat[1,3] <- p_val[1:1]
       outMat[2,3] <- p_val[2:2]
       return(outMat)
-    }
+  }
+  
+  
    
   #test correctness
   OLS(da$maastricht, da$year)
@@ -659,7 +661,175 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
 
 
 #####################BOOTSTRAP###
+OLS_BS <- function(resp,pred){
+  y <- as.matrix(resp)
+  X <- as.matrix(cbind(1,pred))
+  beta <- solve(t(X)%*%X)%*%t(X)%*%y
+  res <- as.matrix(y-beta[1]-beta[2]*X[,2])
+  n <- length(resp)
+  I<- rep(1,n)
+  k <- ncol(X)
+  VCV <- 1/(n-k)*as.numeric(t(res)%*%res)*solve(t(X)%*%X)
+  se <- sqrt(diag(VCV))
+  p_val <- rbind(2*pt(abs(beta[1]/se[1]),df=n-k,
+                      lower.tail= FALSE),
+                 2*pt(abs(beta[2]/se[2]),df=n-k,
+                      lower.tail= FALSE))
+  v <- ((c(y)-beta[1:1]-beta[2:2]*(c(X)-pred[1]))^2)%*%t(I)
+  var <- (1/n)*v[1] #MLE variance estimate
+  #bundle to return
+  outVec <- c(0,0,0)
+  #rownames(outMat) <- c('alpha', 'beta')
+  outVec[1] <- beta[1:1]
+  outVec[2] <- beta[2:2]
+  outVec[3] <- var
+  return(outVec)
+}
 {
+  S_2 <- function(y,x){
+    n <- length(y)
+    (1/(n-2))*OLS_BS(y,x)[3]
+  }
+  
+  
+  #this calculate S_xy
+  S_xy <- function(x,y){
+    I=rep(1,nrow(x))
+    j<-((c(x)-mean(x))*(c(y)-mean(y)))%*%I
+    j[1]
+  }
+  S_yy <- function(y){
+    I=rep(1,nrow(y))
+    j<-((c(y)-mean(y))^2)%*%I
+    j[1]
+  }
+  
+  Beta.0 <- 0  #H0: Beta.0<=0 H1: Beta.0>0
+  
+  crit_val_BS <- function(Bootstrap){
+    alpha <- 0.05															# Choose a significance level alpha
+    c.alpha.star <- quantile(Bootstrap, probs = 1 - alpha)						# Get the bootstrap critical value
+    return(c.alpha.star)
+  }
+  Q_BS <- function(Beta, Beta.0, X, Y){
+    S_xx <- var(X)
+    S_2 <- cov(X, Y)
+    Q_BS <- (Beta - Beta.0)/sqrt(S_2/S_xx)
+    return(Q_BS)
+  }
+  
+  ResidualVector<- function(n,X,Y,a,b){
+    residual<-rep(NA,nrow(da))
+    for(i in 1:n){ 
+      resid[i]= Y[i]-a-b*X[i]
+    }
+    return(residual)
+  }
+  BS_Int <- function(b,crit_alpha_half,crit_one_minus_alpha_half, S_2, X){
+    
+    lb <- b-(crit_alpha_half*sqrt(S_2/var(X)))
+    ub <- b-(crit_one_minus_alpha_half*sqrt(S_2/var(X)))
+    
+    BS_CI <- c(0,0)
+    BS_CI[1] <- lb
+    BS_CI[2] <- ub
+    
+    return(BS_CI)
+  }
+  
+  Resid_BS <- function(n, X, Y, resid, a, b){
+    B<- 999
+    Q.Star<- rep(NA,B)
+    Beta.LS.star <- rep(NA,B)
+    Alpha.LS.star <- rep(NA,B)
+    
+    for(b in 1:B){
+      
+      J <- sample.int(length(year), size = n, replace= TRUE)  	# Draw the indices of the bootstrap sample  
+      resid.star <- resid[J] #draw from sample with replacement
+      X.star <- X #fix
+      Y.star <- a +b*X.star + resid.star #We take alpha* and beta* as estimators in order to bootstrap the residuals, we can also take alpha*=alpha.0 and beta*=beta.0
+      
+      X.star.bar<- mean(X.star)
+      Y.star.bar<- mean(Y.star)
+      S.XX.star <- var(X.star)
+      S.XY.star <- cov(X.star, Y.star)
+      
+      BetaLSstar[b]<-S.XY.star/S.XX.star
+      AlphaLSstar[b]<-Y.star.bar-(BetaLSstar[b]*X.star.bar)
+      
+      S.squared.star<-(1/(n-2))*sum(n, (Y.star-AlphaLSstar[b]-BetaLSstar[b]*X.star)^2)
+      
+      Q.Star[b]<- (BetaLSstar[b]-beta)/sqrt(S.squared.star/S.XX.star)
+      
+    }
+    return(Q.Star)
+  }
+  
+  Pairs_BS <- function(n,X,Y,BetaLS){ #Based on the pairs bootstrap in, "The Bootstrap Notes",2020,pages 33-34, S.Smeekes
+    
+    B <- 999 #numreps
+    Q.star <- rep(NA, B) #ret vector
+    BetaLSstar <- rep(NA, B) #beta
+    AlphaLSstar <- rep(NA, B) #alpha
+    
+    for(b in 1:B){
+      
+      J <- sample.int(nrow(da), size = n, replace= TRUE)  	
+      X.star <- X[J]										
+      Y.star <- Y[J]
+      
+      X.star.bar <- mean(X.star) 
+      Y.star.bar <- mean(Y.star)
+      S.XX.star <- var(X.star) 
+      S.XY.star <- cov(X.star, Y.star)
+      
+      BetaLSstar[b] <- S.XY.star/S.XX.star  #BS beta
+      AlphaLSstar[b] <- Y.star.bar- BetaLSstar[b]*X.star.bar #BS alpha
+      
+      S.squared.star <- (1/(n-2))*sum(n, (Y.star-AlphaLSstar[b]-BetaLSstar[b]*X.star)^2) 
+      
+      Q.star[b] <- (BetaLSstar[b]-BetaLS)/sqrt(S.squared.star/S.XX.star) #bootstrap Q
+    }
+    return(Q.star)
+  }
+}
+
+{
+  #get data ready
+  aD <- OLS_BS(da$de_bilt, da$year)[1]
+  bD <- OLS_BS(da$de_bilt, da$year)[2]
+  aM <- OLS_BS(da$maastricht, da$year)[1]
+  bM <- OLS_BS(da$maastricht, da$year)[2]
+  aE <- OLS_BS(da$eelde, da$year)[1]
+  bE <- OLS_BS(da$eelde, da$year)[2]
+}
+{
+  set.seed(234987)
+  
+  n <- nrow(da)		
+  alpha <- 0.05
+  
+  QM <- Q_BS(bM, Beta.0, da$year, da$maastricht)
+  QD <- Q_BS(bM, Beta.0, da$year, da$de_bilt)
+  QE <- Q_BS(bM, Beta.0, da$year, da$eelde)
+  
+  PairsBSM <- Pairs_BS(n, da$year, da$maastricht, bM)
+  PairsBSD <- Pairs_BS(n, da$year, da$de_bilt, bD)
+  PairsBSD <- Pairs_BS(n, da$year, da$eelde, bE)
+  
+  CIPairsM <- BS_Int(bM, quantile(PairsBSM, probs = 1-(alpha/2)), quantile(PairsBSM, probs = (alpha/2)), S_2(da$year, da$maastricht), da$maastricht)
+  
+  
+ 
+  
+  #3. Residual Bootstrap
+  residual_Maastricht <- ResidualVector(length(year), year, data_Maastricht, alpha_Maastricht, beta_Maastricht)
+  Maastricht_ResidualBootstrap<-ResidualBootstrap(n,year,data_Maastricht, residual_Maastricht, alpha_Maastricht, beta_Maastricht)
+  critical_alpha_Maastricht_Residual<-quantile(Maastricht_ResidualBootstrap,probs=1-alpha)
+  critical_half_alpha_Maastricht_Residual<-quantile(Maastricht_ResidualBootstrap,probs=1-(alpha/2))
+  critical_one_minus_half_alpha_Maastricht_Residual<-quantile(Maastricht_ResidualBootstrap,probs=(alpha/2))
+  CInterval_Maastricht_Residual <- BootstrapInterval(beta_Maastricht,critical_half_alpha_Maastricht_Residual,critical_one_minus_half_alpha_Maastricht_Residual,S_2_Maastricht, year)
   
 }
 
