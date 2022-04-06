@@ -169,7 +169,7 @@ densplotDays <- ggplot(ddLong, aes(x = Temperature, color = City)) + geom_densit
   scale_color_tableau()
 
 ggsave("DD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
-       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures")
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 densplotRoll10_5 <- ggplot(rolling10_5L, aes(x = Temperature, color = City))+ geom_density() +
   theme_minimal() + ylab("Density")+ ggtitle("Rolling 5 Year Window 10 Year Mean Temperatures") +
