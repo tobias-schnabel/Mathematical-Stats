@@ -131,6 +131,10 @@ stargazer(regPreBMD, regPreBME, regPreBMM, regPostBMD, regPostBME, regPostBMM, o
 stargazer(regPreCBMD, regPreCBME, regPreCBMM, regPostCBMD, regPostCBME, regPostCBMM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
           label = "RegMRCB", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRCB")
 
+##Bootstrap
+print(xtable(BSmat1, align = "lccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6), label = "BSmat1"), caption.placement = 'top', table.placement = "H",
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat1")
 
-
+print(xtable(BSmat2, align = "lcccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6,6), label = "BSmat1"), caption.placement = 'top', table.placement = "H",
+      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat2")
 
