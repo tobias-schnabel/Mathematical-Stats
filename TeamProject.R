@@ -576,11 +576,11 @@ postCBM <- dm[month > 197501]
 
 regMat <- OLS(da$maastricht, da$year)
 regMat2 <- OLS(da$de_bilt, da$year)
-regMat3 <- OLS(da$maastricht, da$year)
+regMat3 <- OLS(da$eelde, da$year)
 
 regMatM <- OLS(dm$maastricht, dm$month)
 regMatM2 <- OLS(dm$de_bilt, dm$month)
-regMatM3 <- OLS(dm$maastricht, dm$month)
+regMatM3 <- OLS(dm$eelde, dm$month)
 
 #compute and store regressions for export to tables with stargazer (looks nicer)
 {
@@ -904,7 +904,7 @@ OLS_BS <- function(resp,pred){
                           'Eelde, Yearly Data, Residuals','Maastricht, Yearly Data, Pairs','Maastricht, Yearly Data, Residuals',
                           'De Bilt, Monthly Data, Pairs', 'De Bilt, Monthly Data, Residuals', 'Eelde, Monthly Data, Pairs', 
                           'Eelde, Monthly Data, Residuals','Maastricht, Monthly Data, Pairs','Maastricht, Monthly Data, Residuals')
-    colnames(BSmat1) <- c('Q^*', 'CI lower', 'CI upper')
+    colnames(BSmat1) <- c('$Q^*$', 'CI lower', 'CI upper')
     
     BSmat1[1,1] <- QDY
     BSmat1[3,1] <- QEY
@@ -982,7 +982,7 @@ OLS_BS <- function(resp,pred){
     BSmat2 <- matrix(nrow = 6, ncol=4)
     rownames(BSmat2) <- c('De Bilt, Yearly Data', 'Eelde, Yearly Data','Maastricht, Yearly Data',
                           'De Bilt, Monthly Data', 'Eelde, Monthly Data','Maastricht, Monthly Data')
-    colnames(BSmat2) <- c('t_n', 'p-value', 'CI lower', 'CI upper') 
+    colnames(BSmat2) <- c('$t_n$', 'p-value', 'CI lower', 'CI upper') 
     
     BSmat2[1,1] <- BStD$t
     BSmat2[2,1] <- BStE$t

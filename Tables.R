@@ -88,22 +88,22 @@ print(xtable(testmatHsced2, align = "lcc", caption = "White Tests for Heterosked
 
 
 #print manual reg results
-print(xtable(regMat, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8), label = "regMat"), caption.placement = 'top', table.placement = "H",
+print(xtable(regMat, align = "lccc", caption = "Manually Computed Regression Coefficients, Maastricht, Yearly Data", digits = c(4,6,6,8), label = "regMat"), caption.placement = 'top', table.placement = "H",
         type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMat")
 
-print(xtable(regMat2, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8), label = "regMat2"), caption.placement = 'top', table.placement = "H",
+print(xtable(regMat2, align = "lccc", caption = "Manually Computed Regression Coefficients, De Bilt, Yearly Data", digits = c(4,6,6,8), label = "regMat2"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMat2")
 
-print(xtable(regMat3, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8), label = "regMat3"), caption.placement = 'top', table.placement = "H",
+print(xtable(regMat3, align = "lccc", caption = "Manually Computed Regression Coefficients, Eelde, Yearly Data", digits = c(4,6,6,8), label = "regMat3"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMat3")
 
-print(xtable(regMatM, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8), label = "regMatM"), caption.placement = 'top', table.placement = "H",
+print(xtable(regMatM, align = "lccc", caption = "Manually Computed Regression Coefficients, Maastricht, Monthly Data", digits = c(4,6,6,8), label = "regMatM"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMatM")
 
-print(xtable(regMatM2, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8), label = "regMatM2"), caption.placement = 'top', table.placement = "H",
+print(xtable(regMatM2, align = "lccc", caption = "Manually Computed Regression Coefficients, De Bilt, Monthly Data", digits = c(4,6,6,8), label = "regMatM2"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMatM2")
 
-print(xtable(regMatM3, align = "lccc", caption = "Results of Manual Computation of Regression Coefficients", digits = c(4,6,6,8), label = "regMatM3"), caption.placement = 'top', table.placement = "H",
+print(xtable(regMatM3, align = "lccc", caption = "Manually Computed Regression Coefficients, Eelde, Monthly Data", digits = c(4,6,6,8), label = "regMatM3"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/regMatM3")
 
 #print full regression table
@@ -113,28 +113,43 @@ print(xtable(regMatM3, align = "lccc", caption = "Results of Manual Computation 
 stargazer(regYD, regYE, regYM, out.header = F, title = "Regressions, Yearly Data", table.placement = "H",
           label = "RegY", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegY")
 #restricted
-stargazer(regPreBYD, regPreBYE, regPreBYM, regPostBYD, regPostBYE, regPostBYM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
-          label = "RegYRB", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRB")
+stargazer(regPreBYD, regPreBYE, regPreBYM, out.header = F, title = "Regressions, Yearly Data, Before 1961 Break", table.placement = "H",
+          label = "RegYRBPre",  out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRBPre")
 
-stargazer(regPreCBYD, regPreCBYE, regPreCBYM, regPostCBYD, regPostCBYE, regPostCBYM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
-          label = "RegYRCB", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRCB")
+stargazer(regPostBYD, regPostBYE, regPostBYM, out.header = F, title = "Regressions, Yearly Data, After 1961 Break", table.placement = "H",
+          label = "RegYRBPost",  out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRBPost")
 
+stargazer(regPreCBYD, regPreCBYE, regPreCBYM, out.header = F, title = "Regressions, Yearly Data, Before 1975 Break", table.placement = "H",
+          label = "RegYRCBPre",  out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRCBPre")
+
+stargazer(regPostCBYD, regPostCBYE, regPostCBYM, out.header = F, title = "Regressions, Yearly Data, After 1975 Break", table.placement = "H",
+          label = "RegYRCBPost",  out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRCBPost")
 
 ##monthly data
 #full
 stargazer(regMD, regME, regMM, out.header = F, title = "Regressions, Monthly Data", table.placement = "H", label = "RegM",
           out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegM")
 #restricted
-stargazer(regPreBMD, regPreBME, regPreBMM, regPostBMD, regPostBME, regPostBMM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
-          label = "RegMRB" ,out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRB")
+stargazer(regPreBMD, regPreBME, regPreBMM, out.header = F, title = "Regressions, Monthly Data, Before 1961 Break", table.placement = "H",
+          label = "RegMRBPre" ,no.space = TRUE, out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRBPre")
 
-stargazer(regPreCBMD, regPreCBME, regPreCBMM, regPostCBMD, regPostCBME, regPostCBMM, out.header = F, title = "Regressions, Yearly Data, 1961 Break", table.placement = "H",
-          label = "RegMRCB", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRCB")
+stargazer(regPostBMD, regPostBME, regPostBMM, out.header = F, title = "Regressions, Monthly Data, After 1961 Break", table.placement = "H",
+          label = "RegMRBPost" ,no.space = TRUE, out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRBPost")
+
+stargazer(regPreCBMD, regPreCBME, regPreCBMM, out.header = F, title = "Regressions, Monthly Data, Before 1975 Break", table.placement = "H",
+          label = "RegMRCBPre", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRCBPre")
+
+stargazer(regPostCBMD, regPostCBME, regPostCBMM, out.header = F, title = "Regressions, Monthly Data, After 1975 Break", table.placement = "H",
+          label = "RegMRCBPost", out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegMRCBPost")
 
 ##Bootstrap
-print(xtable(BSmat1, align = "lccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6), label = "BSmat1"), caption.placement = 'top', table.placement = "H",
-      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat1")
+print(xtable(BSmat1, align = "lccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6), 
+             label = "BSmat1"), caption.placement = 'top', table.placement = "H",
+      type = "latex", sanitize.text.function = function(x) {x},
+      file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat1")
 
-print(xtable(BSmat2, align = "lcccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6,6), label = "BSmat1"), caption.placement = 'top', table.placement = "H",
-      type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat2")
+print(xtable(BSmat2, align = "lcccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6,6), 
+             label = "BSmat1"), caption.placement = 'top', table.placement = "H",
+      type = "latex", sanitize.text.function = function(x) {x},
+      file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat2")
 
