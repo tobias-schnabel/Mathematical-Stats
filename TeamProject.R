@@ -238,9 +238,9 @@ postCBM <- dm[month > 197501]
   rownames(testmat1) <- c('De Bilt', 'Eelde', 'Maastricht')
   colnames(testmat1) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
   
-  ttmAM <- t.test(prebreakY$maastricht, postbreakY$maastricht, paired = T)
-  ttmAE <- t.test(prebreakY$eelde, postbreakY$eelde, paired = T)
-  ttmAD <- t.test(prebreakY$de_bilt, postbreakY$de_bilt, paired = T)
+  ttmAM <- t.test(postbreakY$maastricht, prebreakY$maastricht, paired = T)
+  ttmAE <- t.test(postbreakY$eelde, prebreakY$eelde, paired = T)
+  ttmAD <- t.test(postbreakY$de_bilt, prebreakY$de_bilt, paired = T)
   
   testmat1[1,1] <- ttmAD$statistic
   testmat1[2,1] <- ttmAE$statistic
@@ -262,9 +262,9 @@ postCBM <- dm[month > 197501]
   rownames(testmat21) <- c('De Bilt', 'Eelde', 'Maastricht')
   colnames(testmat21) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
   
-  cbttmAM <- t.test(preCBY$maastricht, postCBY$maastricht, paired = T)
-  cbttmAE <- t.test(preCBY$eelde, postCBY$eelde, paired = T)
-  cbttmAD <- t.test(preCBY$de_bilt, postCBY$de_bilt, paired = T)
+  cbttmAM <- t.test(postCBY$maastricht, preCBY$maastricht, paired = T)
+  cbttmAE <- t.test(postCBY$eelde, preCBY$eelde, paired = T)
+  cbttmAD <- t.test(postCBY$de_bilt, preCBY$de_bilt, paired = T)
   
   testmat21[1,1] <- cbttmAD$statistic
   testmat21[2,1] <- cbttmAE$statistic
@@ -289,9 +289,9 @@ postCBM <- dm[month > 197501]
   rownames(testmat2) <- c('De Bilt', 'Eelde', 'Maastricht')
   colnames(testmat2) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
   
-  ttmMM <- t.test(prebreakM$maastricht, postbreakM$maastricht, paired = T)
-  ttmME <- t.test(prebreakM$eelde, postbreakM$eelde, paired = T)
-  ttmMD <- t.test(prebreakM$de_bilt, postbreakM$de_bilt, paired = T)
+  ttmMM <- t.test(postbreakM$maastricht, prebreakM$maastricht, paired = T)
+  ttmME <- t.test(postbreakM$eelde, prebreakM$eelde, paired = T)
+  ttmMD <- t.test(postbreakM$de_bilt, prebreakM$de_bilt, paired = T)
   
   testmat2[1,1] <- ttmAD$statistic
   testmat2[2,1] <- ttmAE$statistic
@@ -313,9 +313,9 @@ postCBM <- dm[month > 197501]
   rownames(testmat23) <- c('De Bilt', 'Eelde', 'Maastricht')
   colnames(testmat23) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
   
-  CBttmMM <- t.test(preCBM$maastricht, postCBM$maastricht, paired = T)
-  CBttmME <- t.test(preCBM$eelde, postCBM$eelde, paired = T)
-  CBttmMD <- t.test(preCBM$de_bilt, postCBM$de_bilt, paired = T)
+  CBttmMM <- t.test(postCBM$maastricht, preCBM$maastricht, paired = T)
+  CBttmME <- t.test(postCBM$eelde, preCBM$eelde, paired = T)
+  CBttmMD <- t.test(postCBM$de_bilt, preCBM$de_bilt, paired = T)
   
   testmat23[1,1] <- CBttmMD$statistic
   testmat23[2,1] <- CBttmME$statistic
@@ -417,9 +417,9 @@ postCBM <- dm[month > 197501]
   testmat6[2,4] <- FtmAE$conf.int[2:2]
   testmat6[3,4] <- FtmAM$conf.int[2:2]
   
-  testmat22 <- matrix(nrow = 3, ncol=4)
+  testmat22 <- matrix(nrow = 3, ncol=5)
   rownames(testmat22) <- c('De Bilt', 'Eelde', 'Maastricht')
-  colnames(testmat22) <- c('t-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper')
+  colnames(testmat22) <- c('F-Statistic', 'p-value', 'C.I. Lower', 'C.I. Upper', 'Point Est.')
   
   cbFtmAM <- var.test(preCBY$maastricht, postCBY$maastricht)
   cbFtmAE <- var.test(preCBY$eelde, postCBY$eelde)
@@ -428,6 +428,10 @@ postCBM <- dm[month > 197501]
   testmat22[1,1] <- cbFtmAD$statistic
   testmat22[2,1] <- cbFtmAE$statistic
   testmat22[3,1] <- cbFtmAM$statistic
+  
+  testmat22[1,5] <- cbFtmAD$estimate
+  testmat22[2,5] <- cbFtmAE$estimate
+  testmat22[3,5] <- cbFtmAM$estimate
   
   testmat22[1,2] <- cbFtmAD$p.value
   testmat22[2,2] <- cbFtmAE$p.value
@@ -506,8 +510,7 @@ postCBM <- dm[month > 197501]
 #manual tests
 {
   #manual Break test
-  #left-sided: H0: mean(preCBY) >= mean(postCBY), H1: mean(preCBY) < mean(postCBY)
-  #diff: H0: mean(postCBY)-mean(preCBY) <0 H1: mean(postCBY)-mean(preCBY) >0
+  #right-tailed: H0: mean(diff <=0, H1: >0)
   #compute differences for pairs of obs 
   diff <- postCBY[, .(de_bilt, eelde, maastricht)] - preCBY[, .(de_bilt, eelde, maastricht)]
   

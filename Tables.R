@@ -5,7 +5,7 @@ stargazer(daSS, out.header = F, title = "Annual Data", table.placement = "H",
 
 
 dmSS <- dmC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
-stargazer(dmSS, out.header = F, title = "Smoothed Monthly Data", table.placement = "H",
+stargazer(dmSS, out.header = F, title = "Monthly Data", table.placement = "H",
           label = "BMS",out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Descriptive/MS" )
 
 dmsSS <- dmsC[,.("De Bilt" = De.Bilt, Eelde, Maastricht)]
@@ -18,13 +18,13 @@ stargazer(ddSS, out.header = F, title = "Daily Data", table.placement = "H",
 
 
 #time series break tests
-print(xtable(structtabY, align = "llll", caption = "Structural Break in Yearly Data", digits = 5, label = "BBSBY"), caption.placement = 'top', table.placement = "H",
+print(xtable(structtabY, align = "llll", caption = "Structural Break in Yearly Data", digits = 5, label = "BSBY"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/SBY")
 
-print(xtable(structtabM, align = "llll", caption = "Structural Break in Monthly Data", digits = 5, label = "BBSBM"), caption.placement = 'top', table.placement = "H",
+print(xtable(structtabM, align = "llll", caption = "Structural Break in Monthly Data", digits = 5, label = "BSBM"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/SBM")
 
-print(xtable(structtabBP, align = "llcc", caption = "Structural Break Breakpoints", digits = c(0,0,0,2), label = "BBSBBP"), caption.placement = 'top', table.placement = "H",
+print(xtable(structtabBP, align = "llcc", caption = "Structural Break Breakpoints", digits = c(0,0,0,2), label = "BSBBP"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/SBBP")
 
 #paired t tests
@@ -58,7 +58,7 @@ print(xtable(testmat6, align = "lccccc", caption = "F-tests, Yearly Data, 1961 B
 print(xtable(testmat7, align = "lccccc", caption = "F-tests, Monthly Data, 1961 Break", digits = c(5,5,5,7,4,4), label = "BF-test-M"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/F-test-M")
 
-print(xtable(testmat22, align = "lcccc", caption = "F-tests, Yearly Data, 1975 Break", digits = c(5,5,7,4,4), label = "BF-test-CBY"), caption.placement = 'top', table.placement = "H",
+print(xtable(testmat22, align = "lccccc", caption = "F-tests, Yearly Data, 1975 Break", digits = c(5,5,7,4,4,4), label = "BF-test-CBY"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/F-test-CBY")
 
 print(xtable(testmat24, align = "lccccc", caption = "F-tests, Monthly Data, 1975 Break", digits = c(5,5,5,7,4,4), label = "BF-test-CBM"), caption.placement = 'top', table.placement = "H",
@@ -70,7 +70,7 @@ print(xtable(testmat6, align = "lccccc", caption = "F-tests, Yearly Data, 1961 B
 print(xtable(testmat7, align = "lccccc", caption = "F-tests, Monthly Data, 1961 Break", digits = c(5,3,7,4,4,4), label = "BF-test-MB"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/F-test-MB")
 
-print(xtable(testmat22, align = "lcccc", caption = "F-tests, Yearly Data, 1975 Break", digits = c(5,3,7,4,4), label = "BF-test-CBY"), caption.placement = 'top', table.placement = "H",
+print(xtable(testmat22, align = "lccccc", caption = "F-tests, Yearly Data, 1975 Break", digits = c(5,3,7,4,4,4), label = "BF-test-CBY"), caption.placement = 'top', table.placement = "H",
       type = "latex", file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Tests/F-test-CBY")
 
 print(xtable(testmat24, align = "lccccc", caption = "F-tests, Monthly Data, 1975 Break", digits = c(5,3,7,4,4,4), label = "BF-test-CBM"), caption.placement = 'top', table.placement = "H",
