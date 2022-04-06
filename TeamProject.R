@@ -608,6 +608,14 @@ regMatM3 <- OLS(dm$maastricht, dm$month)
   regPostCBYE <- lm(postCBY$eelde ~ postCBY$year)
   regPostCBYM <- lm(postCBY$maastricht ~ postCBY$year)
   
+  regPreBMD <- lm(prebreakM$de_bilt ~ prebreakM$month)
+  regPreBME <- lm(prebreakM$eelde ~ prebreakM$month)
+  regPreBMM <- lm(prebreakM$maastricht ~ prebreakM$month)
+  
+  regPostBMD <- lm(postbreakM$de_bilt ~ postbreakM$month)
+  regPostBME <- lm(postbreakM$eelde ~ postbreakM$month)
+  regPostBMM <- lm(postbreakM$maastricht ~ postbreakM$month)
+  
   regPreCBMD <- lm(preCBM$de_bilt ~ preCBM$month)
   regPreCBME <- lm(preCBM$eelde ~ preCBM$month)
   regPreCBMM <- lm(preCBM$maastricht ~ preCBM$month)
