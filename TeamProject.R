@@ -953,7 +953,7 @@ OLS_BS <- function(resp,pred){
   
   ##BS t-test for Climate Break
   {
-    #diff <- postCBY[, .(de_bilt, eelde, maastricht)] - preCBY[, .(de_bilt, eelde, maastricht)]
+    #diff <- postCBY[, .(de_bilt, eelde, maastricht)] - preCBY[, .(de_bilt, eelde, maastricht)] (already exists)
     diffM <- postCBM[, .(de_bilt, eelde, maastricht)] - preCBM[, .(de_bilt, eelde, maastricht)]
     
     BStM <- BS_t(diff$maastricht)
