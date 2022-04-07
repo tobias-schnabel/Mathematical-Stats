@@ -125,6 +125,10 @@ stargazer(regPreCBYD, regPreCBYE, regPreCBYM, out.header = F, title = "Regressio
 stargazer(regPostCBYD, regPostCBYE, regPostCBYM, out.header = F, title = "Regressions, Yearly Data, After 1975 Break", table.placement = "H",
           label = "BRegYRCBPost",  out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegYRCBPost")
 
+#demo
+stargazer(regPreCBYM, regPostCBYM, out.header = F, title = "Regressions, Yearly Data, Before and After 1975 Break", table.placement = "H",
+          column.labels = c("Year < 1975", "Year > 1975"), label = "BRegDemo",  out = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/Regressions/RegDemo")
+
 ##monthly data
 #full
 stargazer(regMD, regME, regMM, out.header = F, title = "Regressions, Monthly Data", table.placement = "H", label = "BRegM",
