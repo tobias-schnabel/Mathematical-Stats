@@ -15,6 +15,11 @@ dmLong <- melt(dmC, id.vars = c("Month"), measure.vars = c("Maastricht", "Eelde"
                variable.factor = T, variable.name = "City", value.name = "Temperature")
 citymeanM <- dmLong[, Citymean := mean(Temperature), by = City]
 
+dmBackupC <- dmbackup[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Month = month )]
+dmLongBackup <- melt(dmBackupC, id.vars = c("Month"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
+               variable.factor = T, variable.name = "City", value.name = "Temperature")
+citymeanMBackup <- dmLong[, Citymean := mean(Temperature), by = City]
+
 ddC <- dd[, .(Maastricht = maastricht, Eelde = eelde, De.Bilt = de_bilt, Date = date )]
 ddLong <- melt(ddC, id.vars = c("Date"), measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                variable.factor = T, variable.name = "City", value.name = "Temperature")

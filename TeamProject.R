@@ -2,7 +2,7 @@
 
 rm(list = ls(all = TRUE)) ###CLEAR ALL
 # Package names
-packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "scales", "strucchange", 
+packages <- c("data.table", "dplyr", "zoo", "tidyr", "ggplot2", "ggthemes", "scales", "strucchange", "xts",
               "skedastic", "tidyverse", "xtable", "knitr", "stargazer", "patchwork", "remotes", "broom", "purrr")
 # package grateful must be installed by hand# install.packages("remotes")
 remotes::install_github("Pakillo/grateful")
@@ -161,7 +161,7 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
 
 ##############PROBLEM##########
 ###############################
-#last-minute (April 7, 21:02) realization 
+#last-minute (April 7, 22:02) realization 
 #that extension to monthly data explicitly 
 #requires deseasonalization
 #leads to: plot(density(dm$maastricht)), which leads to 
@@ -199,7 +199,8 @@ deseasonalize <- function(mmstart, mmend){
 ############TO BE CLEAR, THE ADDITION OF
 ##THIS FUNCTION AND THE CHANGE in 'dm' came at the 
 #VERY LAST MINUTE (APRIL 7 22:02), earlier results can very easily be re-obtained
-##BY COMMENTING OUT LINE 205
+##BY COMMENTING OUT LINE 204
+dmbackup <- dm
 dm <- deseasonalize(4,11)
 
 #gen datasets needed

@@ -57,6 +57,15 @@ TSM <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
 ggsave("TSM.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
+TSMbackup <- ggplot(dmLongBackup, aes(x = Month, y = Temperature)) +
+  geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
+  theme_minimal() + scale_color_tableau() + 
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  xlim(190501, 202501) + ggtitle("Monthly Data April - November")
+
+ggsave("TSMBackup.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
+
 TSMS <- ggplot(dmsLong, aes(x = Month, y = Temperature)) +
   geom_line(aes(color = City)) + labs(y = 'Temperature', x = 'Year') +
   theme_minimal() + scale_color_tableau() + 
@@ -150,6 +159,15 @@ densplotmonths <- ggplot(dmLong, aes(x = Temperature, color = City)) + geom_dens
   scale_color_tableau()
 
 ggsave("MD.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
+
+densplotmonthsBackup <- ggplot(dmLongBackup, aes(x = Temperature, color = City)) + geom_density() +
+  geom_vline(data=citymeanMBackup, aes(xintercept = Citymean, color = City), linetype = "dashed") +
+  theme_minimal() + ylab("Density")+ ggtitle("Monthly Mean Temperatures") +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5)) +
+  scale_color_tableau()
+
+ggsave("MDBackup.png",  bg = "white", dpi = "retina", width = 20, height = 10, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Raw")
 
 
@@ -368,7 +386,7 @@ ggsave("AllRegsMB.png",  bg = "white", dpi = "retina", width = 20, height = 15, 
 
 #residuals
 mod1 <- lm(da$maastricht ~ da$year)
-mod2 <- lm(dm$de_bilt ~ dm$month)
+mod2 <- lm(dm$maastricht ~ dm$month)
 
 residplot1 <- ggplot(data = da, aes(x = mod1$residuals)) +
   geom_density(color = '#4E79A7') + #geom_histogram(fill="#4E79A7", color = 'black', position="dodge", bins = 50)+
@@ -377,7 +395,7 @@ residplot1 <- ggplot(data = da, aes(x = mod1$residuals)) +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "none") +
   ggtitle("Density of Residuals, Maastricht ~ Year")
 
-ggsave("ResidDens1.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+ggsave("ResidDensY.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
 
 residplot2 <- ggplot(data = dm, aes(x = mod2$residuals)) +
@@ -387,5 +405,5 @@ residplot2 <- ggplot(data = dm, aes(x = mod2$residuals)) +
   theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "none") +
   ggtitle("Density of Residuals, Maastricht ~ Month")
 
-ggsave("ResidDens2.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+ggsave("ResidDensM.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
