@@ -566,9 +566,17 @@ postCBM <- dm[month > 197501]
       outMat[1,3] <- p_val[1:1]
       outMat[2,3] <- p_val[2:2]
       return(outMat)
+      
+      OLS_res <- function(resp,pred){
+        y <- as.matrix(resp)
+        X <- as.matrix(cbind(1,pred))
+        beta <- solve(t(X)%*%X)%*%t(X)%*%y
+        res <- as.matrix(y-beta[1]-beta[2]*X[,2])
+        
+        return(res)
+      }
+  
   }
-  
-  
    
   #test correctness
   OLS(da$maastricht, da$year)

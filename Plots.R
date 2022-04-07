@@ -366,5 +366,26 @@ allRegsMB <- ggplot(dmLong, aes(x = Month, y = Temperature)) +
 ggsave("AllRegsMB.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
        path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
 
+#residuals
+mod1 <- lm(da$maastricht ~ da$year)
+mod2 <- lm(dm$de_bilt ~ dm$month)
 
-                                              
+residplot1 <- ggplot(data = da, aes(x = mod1$residuals)) +
+  geom_density(color = '#4E79A7') + #geom_histogram(fill="#4E79A7", color = 'black', position="dodge", bins = 50)+
+    labs(x = 'Residuals', y = 'Frequency') +
+  theme_minimal() + scale_color_tableau() +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "none") +
+  ggtitle("Density of Residuals, Maastricht ~ Year")
+
+ggsave("ResidDens1.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
+
+residplot2 <- ggplot(data = dm, aes(x = mod2$residuals)) +
+  geom_density(color = '#F28E2B') + #geom_histogram(fill="#4E79A7", color = 'black', position="dodge", bins = 50)+
+  labs(x = 'Residuals', y = 'Frequency') +
+  theme_minimal() + scale_color_tableau() +
+  theme( panel.grid.minor = element_blank(), plot.title = element_text(hjust = 0.5), legend.position = "none") +
+  ggtitle("Density of Residuals, Maastricht ~ Month")
+
+ggsave("ResidDens2.png",  bg = "white", dpi = "retina", width = 20, height = 15, units = "cm",
+       path = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Figures/Regs")
