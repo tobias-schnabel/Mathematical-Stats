@@ -102,12 +102,34 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
     return(compSet)
   }
   
+  subsetMonths <- function(mmstart, mmend){
+    mmstart <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
+    mmend <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
+    
+    subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
+    ][, month := format(as.Date(DateCol), "%m")]
+    compSet <- subset[month >= mmstart & month <=mmend, .(DateCol, eelde, de_bilt, maastricht)]
+    return(compSet)
+  }
+  
   subsetMonthLong <- function(mm){
     mm <- str_pad(as.character(mm), 2, side = "left", pad = '0')
     
     subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
     ][, month := format(as.Date(DateCol), "%m")]
     compSet <- subset[month == mm, .(Month = month, Eelde = eelde, De.Bilt = de_bilt, Maastricht = maastricht)]
+    ret <- melt(compSet, id.vars = "Month", measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
+                variable.factor = T, variable.name = "City", value.name = "Temperature")[, Citymean := mean(Temperature), by = City]
+    return(ret)
+  }
+  
+  subsetMonthsLong <- function(mmstart,mmend){
+    mmstart <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
+    mmend <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
+    
+    subset <- dd[, DateCol := as.Date(as.character(date), format = "%Y%m%d")
+    ][, month := format(as.Date(DateCol), "%m")]
+    compSet <- subset[month >= mmstart & month <=mmend, .(Month = month, Eelde = eelde, De.Bilt = de_bilt, Maastricht = maastricht)]
     ret <- melt(compSet, id.vars = "Month", measure.vars = c("Maastricht", "Eelde", "De.Bilt"),
                 variable.factor = T, variable.name = "City", value.name = "Temperature")[, Citymean := mean(Temperature), by = City]
     return(ret)
@@ -136,6 +158,51 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
     return(ret)
   } 
 }
+
+##############PROBLEM##########
+###############################
+#last-minute (April 7, 21:02) realization 
+#that extension to monthly data explicitly 
+#requires deseasonalization
+#leads to: plot(density(dm$maastricht)), which leads to 
+#the utterance of several expletives
+test1 <- subsetMonths(3,10)
+plot(density(test1$maastricht))
+plot(density(test1$de_bilt))
+test2 <- subsetMonths(4,11)
+plot(density(test2$maastricht))
+plot(density(test2$eelde))
+test3 <- subsetMonths(4,11)
+plot(density(test3$maastricht))
+plot(density(test3$de_bilt))
+plot(density(test3$eelde))
+
+#test3 looks close enough to a normal distribution
+#hail-mary:
+#dm <- test3
+
+##SOLUTION
+#dm <- test3
+deseasonalize <- function(mmstart, mmend){
+  mmstart <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
+  mmend <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
+  
+  tsdat <- xts(dd, as.Date(as.character(dd$date), format = "%Y%m%d"))
+  ts_m = apply.monthly(tsdat, mean)
+  dmts <- as.data.table(ts_m)[,date := as.Date(index, format = "%m")][, month := format(date, "%m")][,mon:=as.numeric(month)]
+  dm2 <- cbind(dm$month, dmts$mon, dmts$de_bilt, dmts$eelde, dmts$maastricht)
+  colnames(dm2) <- c('month', 'mon', 'de_bilt', 'eelde', 'maastricht')
+  dm3 <- as.data.table(dm2)[mon >= 4 & mon <=11][, .(month, de_bilt, eelde, maastricht)]
+  colnames(dm3) <- c('month', 'de_bilt', 'eelde', 'maastricht')
+  
+  return(dm3)
+}
+
+############TO BE CLEAR, THE ADDITION OF
+##THIS FUNCTION AND THE CHANGE in 'dm' came at the 
+#VERY LAST MINUTE (APRIL 7 22:02), earlier results can very easily be re-obtained
+##BY COMMENTING OUT LINE 205
+dm <- deseasonalize(4,11)
 
 #gen datasets needed
 {
@@ -224,7 +291,7 @@ colnames(dd) <- c('date', 'de_bilt', 'eelde', 'maastricht')
 prebreakY <- da[year <= 1961]
 postbreakY <- da[year > 1961 & year < 2017] #ensure equal sample size
 prebreakM <- dm[month <= 196210]
-postbreakM <- dm[month > 196210 & month < (max(month)-203)] #ensure equal sample size
+postbreakM <- dm[month > 196210 & month < (max(month)-201)] #ensure equal sample size
 
 #subset according to climate results
 preCBY <- da[year <= 1975 & year > 1930] #ensure equal sample size
@@ -681,6 +748,19 @@ regMatM3 <- OLS(dm$eelde, dm$month)
 ########################CLEANUP AND EXPORT
 {
   if (Sys.info()[7] == "ts") {
+    
+    ########################Do Plots & Tables################################
+    source("Tidy.R")
+    source("Plots.R")
+    source("Bootstrap.R")
+    source("Tables.R")
+    ########################R File########################
+    file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    file.copy('Plots.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    file.copy('Tables.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    file.copy('Bootstrap.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    file.copy('Tidy.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
+    
     #credit OSS authors
     knitr::write_bib(c(.packages()),
                      "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/packages.bib")
@@ -688,18 +768,6 @@ regMatM3 <- OLS(dm$eelde, dm$month)
     grateful::cite_packages(output = "paragraph", dependencies = T, include.RStudio = T, 
                             out.dir = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/",
                             bib.file = "grateful.bib")
-    
-    ########################Do Plots & Tables################################
-    invisible(source("Tidy.R")) 
-    invisible(source("Plots.R"))
-    invisible(source("Tables.R"))
-    invisible(source("Bootstrap.R"))
-    ########################R File########################
-    file.copy('TeamProject.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
-    file.copy('Plots.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
-    file.copy('Tables.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
-    file.copy('Bootstrap.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
-    file.copy('Tidy.R', '/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Code', overwrite = T)
   }
   
 }

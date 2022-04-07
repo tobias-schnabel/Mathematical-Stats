@@ -152,7 +152,7 @@ print(xtable(BSmat1, align = "lccc", caption = "Bootstrap: t-test for Regression
       type = "latex", sanitize.text.function = function(x) {x},
       file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat1")
 
-print(xtable(BSmat2, align = "lcccc", caption = "Bootstrap: t-test for Regression Coefficients", digits = c(4,4,6,6,6), 
+print(xtable(BSmat2, align = "lcccc", caption = "Bootstrap: Paired t-test", digits = c(4,4,6,6,6), 
              label = "BBSmat1"), caption.placement = 'top', table.placement = "H",
       type = "latex", sanitize.text.function = function(x) {x},
       file = "/Users/ts/Dropbox/Apps/Overleaf/Project Mathematical Statistics/Tables/BS/BSmat2")
