@@ -184,8 +184,6 @@ plot(density(test3$eelde))
 ##SOLUTION
 #dm <- test3
 deseasonalize <- function(mmstart, mmend){
-  mmstart <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
-  mmend <- str_pad(as.character(mmstart), 2, side = "left", pad = '0')
   
   tsdat <- xts(dd, as.Date(as.character(dd$date), format = "%Y%m%d"))
   ts_m = apply.monthly(tsdat, mean)
